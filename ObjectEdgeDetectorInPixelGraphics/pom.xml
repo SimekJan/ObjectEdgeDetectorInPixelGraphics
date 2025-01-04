@@ -11,4 +11,11 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.ObjectEdgeDetectorInPixelGraphics</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.opencv</groupId>
+            <artifactId>opencv</artifactId>
+            <version>4.9.0</version>
+        </dependency>
+    </dependencies>
 </project>
