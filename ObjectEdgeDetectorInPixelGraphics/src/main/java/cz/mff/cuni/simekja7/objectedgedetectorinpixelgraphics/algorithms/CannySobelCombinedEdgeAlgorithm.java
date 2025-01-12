@@ -10,7 +10,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
- *
+ * Combined CannyEdge and SobelEdge algorithms using bitwise and.
  * @author simek.jan
  */
 public class CannySobelCombinedEdgeAlgorithm extends EdgeAlgorithm {

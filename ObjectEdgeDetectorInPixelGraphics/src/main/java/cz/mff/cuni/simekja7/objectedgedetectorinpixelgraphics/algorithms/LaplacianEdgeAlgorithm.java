@@ -12,7 +12,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
- *
+ * LaplacianEdge algorithm using OpenCV methods.
  * @author simek.jan
  */
 public class LaplacianEdgeAlgorithm extends EdgeAlgorithm {

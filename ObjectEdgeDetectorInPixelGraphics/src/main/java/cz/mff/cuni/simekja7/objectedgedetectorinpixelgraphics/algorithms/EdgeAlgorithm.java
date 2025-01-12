@@ -7,9 +7,14 @@ package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 import org.opencv.core.Mat;
 
 /**
- *
+ * Abstract class for all edge-detecting algorithms.
  * @author simek.jan
  */
 public abstract class EdgeAlgorithm {
+    /**
+     * Runs concrete algorithm.
+     * @param image_name Path to image to run the algorithm on.
+     * @return Mat with the edges.
+     */
     public abstract Mat run(String image_name);
 }

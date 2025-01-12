@@ -12,7 +12,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
- *
+ * Custom Edge algorithm using methods similar to SIFT detection.
  * @author simek.jan
  */
 public class SiftEdgeAlforithm extends EdgeAlgorithm {
@@ -62,6 +62,11 @@ public class SiftEdgeAlforithm extends EdgeAlgorithm {
         return combinedWithCanny;
     }
     
+    /**
+     * Adjust the brighthness of a picture so that the brightest point is now white.
+     * @param input Mat of the image to adjust.
+     * @return Mat of adjusted image.
+     */
     public static Mat AdjustBrightness(Mat input) {
         double minVal, maxVal;
         Core.MinMaxLocResult minMaxLocResult = Core.minMaxLoc(input);

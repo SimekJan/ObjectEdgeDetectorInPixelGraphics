@@ -11,7 +11,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
- *
+ * SobelEdge algorithm using OpenCV implementation.
  * @author simek.jan
  */
 public class SobelEdgeAlgorithm extends EdgeAlgorithm {

@@ -9,7 +9,7 @@ import org.opencv.core.Core;
 import org.opencv.imgcodecs.Imgcodecs;
 
 /**
- *
+ * Main method to enter the app from.
  * @author simek.jan
  */
 public class ObjectEdgeDetectorInPixelGraphics {

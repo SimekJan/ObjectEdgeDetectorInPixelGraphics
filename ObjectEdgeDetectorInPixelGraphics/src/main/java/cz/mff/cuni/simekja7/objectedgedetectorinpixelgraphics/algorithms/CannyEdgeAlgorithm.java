@@ -9,7 +9,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
- *
+ * CannyEdge algorithm using OpenCV implementation.
  * @author simek.jan
  */
 public class CannyEdgeAlgorithm extends EdgeAlgorithm {
