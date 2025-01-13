@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
+import org.opencv.core.KeyPoint;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -26,6 +27,9 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
         
         // Step 1: DoG
         List<Mat> diff_of_gs = ComputeDifferenceOfGaussians(PrepareBluredImages(image, 8));
+        
+        // Step 2: KeyPoints
+        List<KeyPoint> keypoints = FinfKeyPoints(diff_of_gs, 10); 
         
         // Imgproc.threshold(combinedImage, combinedImage, 10, 255, Imgproc.THRESH_BINARY);
         
@@ -90,6 +94,18 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
             diff_of_gs.add(combined_image);
         }
         return diff_of_gs;
+    }
+    
+    /**
+     * Creates list of edge-keypoints from DoG.
+     * @param dog_list List with DoG Mats.
+     * @param threshold Threshold for determining if is valid point.
+     * @return List of edge-keypoints.
+     */
+    private List<KeyPoint> FinfKeyPoints(List<Mat> dog_list, double threshold) {
+        List<KeyPoint> keypoints = new ArrayList<>();
+        // TODO
+        return keypoints;
     }
     
     /**
