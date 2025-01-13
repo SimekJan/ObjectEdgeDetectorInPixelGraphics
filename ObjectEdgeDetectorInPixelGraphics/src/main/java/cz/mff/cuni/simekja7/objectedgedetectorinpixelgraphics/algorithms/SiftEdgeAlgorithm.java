@@ -24,14 +24,8 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
         Mat image = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);        
         image = AdjustBrightness(image);
         
-        Mat lowBlur = new Mat();
-        Mat highBlur = new Mat();
-        Imgproc.GaussianBlur(image, lowBlur, new Size(5, 5), 1.0);
-        Imgproc.GaussianBlur(image, highBlur, new Size(5, 5), 4.0);
-
-        Mat combinedImage = new Mat();
-        Core.subtract(lowBlur, highBlur, combinedImage);
-
+        List<Mat> diff_of_gs = ComputeDifferenceOfGaussians(PrepareBluredImages(image, 8));
+        
         // Imgproc.threshold(combinedImage, combinedImage, 10, 255, Imgproc.THRESH_BINARY);
         
         combinedImage = AdjustBrightness(combinedImage);
@@ -73,7 +67,11 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
      */
     private List<Mat> PrepareBluredImages(Mat input_image, int count) {
         List<Mat> blured_imgs = new ArrayList<>();
-        // TODO
+        for(int i = 0; i < count; i++) {
+            Mat another_one = new Mat();
+            Imgproc.GaussianBlur(input_image, another_one, new Size(5, 5), i);
+            blured_imgs.add(another_one);
+        }
         return blured_imgs;
     }
     
@@ -84,7 +82,11 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
      */
     private List<Mat> ComputeDifferenceOfGaussians(List<Mat> blured_images) {
         List<Mat> diff_of_gs = new ArrayList<>();
-        // TODO
+        for(int i = 1; i < blured_images.size(); i++) {
+            Mat combined_image = new Mat();
+            Core.subtract(blured_images.get(i), blured_images.get(i-1), combined_image);
+            diff_of_gs.add(combined_image);
+        }
         return diff_of_gs;
     }
     
