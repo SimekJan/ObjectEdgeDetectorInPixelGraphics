@@ -4,6 +4,8 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -15,12 +17,13 @@ import org.opencv.imgproc.Imgproc;
  * Custom Edge algorithm using methods similar to SIFT detection.
  * @author simek.jan
  */
-public class SiftEdgeAlforithm extends EdgeAlgorithm {
+public class SiftEdgeAlgorithm extends EdgeAlgorithm {
 
     @Override
     public Mat run(String image_name) {
-        Mat image = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);
-
+        Mat image = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);        
+        image = AdjustBrightness(image);
+        
         Mat lowBlur = new Mat();
         Mat highBlur = new Mat();
         Imgproc.GaussianBlur(image, lowBlur, new Size(5, 5), 1.0);
@@ -29,10 +32,10 @@ public class SiftEdgeAlforithm extends EdgeAlgorithm {
         Mat combinedImage = new Mat();
         Core.subtract(lowBlur, highBlur, combinedImage);
 
-        Imgproc.threshold(combinedImage, combinedImage, 10, 255, Imgproc.THRESH_BINARY);
+        // Imgproc.threshold(combinedImage, combinedImage, 10, 255, Imgproc.THRESH_BINARY);
         
         combinedImage = AdjustBrightness(combinedImage);
-        // Imgcodecs.imwrite("substracted_blurs_lm.jpg", combinedImage);
+        Imgcodecs.imwrite("substracted_blurs_lm.jpg", combinedImage);
         
         Imgproc.GaussianBlur(combinedImage, combinedImage, new Size(5,5), 2.0);
         
@@ -63,11 +66,34 @@ public class SiftEdgeAlforithm extends EdgeAlgorithm {
     }
     
     /**
+     * Creates a list of different blurred versions of given image.
+     * @param input_image The image to prepare list for.
+     * @param count The number of versions to be done.
+     * @return List of blurred versions.
+     */
+    private List<Mat> PrepareBluredImages(Mat input_image, int count) {
+        List<Mat> blured_imgs = new ArrayList<>();
+        // TODO
+        return blured_imgs;
+    }
+    
+    /**
+     * Creates difference of Gaussians from given list of blurred images.
+     * @param blured_images The list to process.
+     * @return List with the differences of Gaussians.
+     */
+    private List<Mat> ComputeDifferenceOfGaussians(List<Mat> blured_images) {
+        List<Mat> diff_of_gs = new ArrayList<>();
+        // TODO
+        return diff_of_gs;
+    }
+    
+    /**
      * Adjust the brighthness of a picture so that the brightest point is now white.
      * @param input Mat of the image to adjust.
      * @return Mat of adjusted image.
      */
-    public static Mat AdjustBrightness(Mat input) {
+    private Mat AdjustBrightness(Mat input) {
         double minVal, maxVal;
         Core.MinMaxLocResult minMaxLocResult = Core.minMaxLoc(input);
         minVal = minMaxLocResult.minVal;

@@ -18,7 +18,7 @@ public class ObjectEdgeDetectorInPixelGraphics {
     
     public static void main(String[] args) {        
         
-        EdgeAlgorithm a = new LaplacianEdgeAlgorithm();
+        EdgeAlgorithm a = new SiftEdgeAlgorithm();
         
         Imgcodecs.imwrite("test.jpg", a.run("london.jpg"));
     }
