@@ -18,8 +18,8 @@ public class ObjectEdgeDetectorInPixelGraphics {
     
     public static void main(String[] args) {        
         
-        EdgeAlgorithm a = new MyCannyEdgeAlgorithm();
+        EdgeAlgorithm a = new SiftEdgeAlgorithm();
         
-        /*Imgcodecs.imwrite("test.jpg",*/ a.run("london.jpg")/*)*/;
+        Imgcodecs.imwrite("SIFT_test.jpg", a.run("london.jpg"));
     }
 }

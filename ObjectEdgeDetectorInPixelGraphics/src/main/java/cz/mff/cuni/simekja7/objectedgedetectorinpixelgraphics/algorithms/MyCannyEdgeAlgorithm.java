@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- *
+ * Custom implementation of Canny edge algorithm.
  * @author simek.jan
  */
 public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
@@ -48,7 +48,11 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         return new Mat();
     }
 
-    // Load the image from file
+    /**
+     * Load image from file to BufferedImage.
+     * @param filePath Path to the image.
+     * @return Processed image to use.
+     */
     private static BufferedImage loadImage(String filePath) {
         try {
             return ImageIO.read(new File(filePath));
@@ -58,7 +62,11 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         }
     }
 
-    // Convert an image to grayscale
+    /**
+     * Convert image to matrix of gray-scale values.
+     * @param coloredImage Image to process.
+     * @return Image repressented by double values in intensity.
+     */
     private static double[][] convertToGrayscale(BufferedImage coloredImage) {
         int width = coloredImage.getWidth();
         int height = coloredImage.getHeight();
@@ -78,13 +86,22 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         return grayscaleImage;
     }
 
-    // Apply Gaussian blur to smooth the image
+    /**
+     * Apply Gaussian blur to image in double representation.
+     * @param image The image to blur.
+     * @return Blured image.
+     */
     private static double[][] applyGaussianBlur(double[][] image) {
         double[][] kernel = generateGaussianKernel(5, 1.4); // size 5x5, sigma 1.4
         return convolve(image, kernel);
     }
 
-    // Generate a Gaussian kernel
+    /**
+     * Generate a Gaussian kernel of given size and sigma value.
+     * @param size The size of kernel to generate.
+     * @param sigma The sigma value of kernel to generate.
+     * @return The kernel with given values.
+     */
     private static double[][] generateGaussianKernel(int size, double sigma) {
         double[][] kernel = new double[size][size];
         double sum = 0.0;
@@ -108,7 +125,12 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         return kernel;
     }
 
-    // Convolve an image with a kernel
+    /**
+     * Convolve an image with a kernel.
+     * @param image The image to process.
+     * @param kernel The kernel to use.
+     * @return Blured image.
+     */
     private static double[][] convolve(double[][] image, double[][] kernel) {
         int width = image.length;
         int height = image[0].length;
@@ -140,7 +162,24 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         return result;
     }
 
-    // Compute gradient magnitude and direction using Sobel operators
+    /**
+     * Helper class to store gradient results
+     */
+    private static class GradientResult {
+        double[][] magnitude;
+        double[][] direction;
+
+        GradientResult(double[][] magnitude, double[][] direction) {
+            this.magnitude = magnitude;
+            this.direction = direction;
+        }
+    }
+    
+    /**
+     * Compute gradient magnitude and direction using Sobel operators.
+     * @param image The image to make gradient on.
+     * @return Gradient for the image given.
+     */
     private static GradientResult computeGradient(double[][] image) {
         int[][] sobelX = {
             {-1, 0, 1},
@@ -183,6 +222,11 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         return new GradientResult(gradientMagnitude, gradientDirection);
     }
     
+    /**
+     * Helper method to duplicate nearest pixel value to the edge.
+     * Works only on one pixel wide layer on edge.
+     * @param image Image to process.
+     */
     private static void fillEdgesWithCopiesOfInnerNeighbour(double[][] image) {
         int width = image.length;
         int height = image[0].length;
@@ -198,7 +242,12 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 
     }
 
-    // Non-maximum suppression to thin edges
+    /**
+     * Non-maximum suppression to thin edges.
+     * @param magnitude Gradient magnitude to use.
+     * @param direction Gradient direction to use.
+     * @return Image with created values.
+     */
     private static double[][] nonMaximumSuppression(double[][] magnitude, double[][] direction) {
         int width = magnitude.length;
         int height = magnitude[0].length;
@@ -244,9 +293,18 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         return suppressed;
     }
     
+    /**
+     * Helper enum for differentiated types of edges.
+     */
     enum EdgeType {STRONG, WEAK, NONE}
     
-    // Apply double thresholding
+    /**
+     * Apply double thresholding to EdgeType matrix.
+     * @param image Image to process.
+     * @param lowThreshold Treshold for weak edges.
+     * @param highThreshold Treshold for strong edges.
+     * @return Processed matrix of EdgeTypes.
+     */
     private static EdgeType[][] doubleThreshold(double[][] image, double lowThreshold, double highThreshold) {
         int width = image.length;
         int height = image[0].length;
@@ -268,7 +326,12 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         return edgeMap;
     }
 
-    // Perform edge tracking by hysteresis
+    /**
+     * Perform edge tracking by hysteresis.
+     * Removes weak edges not close to strong edges, the rest is promoted to strong.
+     * @param edgeMap Matrix of EdgeTypes to process.
+     * @return Processed EdgeType matrix with only strong and none types.
+     */
     private static EdgeType[][] edgeTrackingByHysteresis(EdgeType[][] edgeMap) {
     int width = edgeMap.length;
     int height = edgeMap[0].length;
@@ -298,7 +361,11 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     return edgeMap;
 }
 
-    // Convert a binary edge map to a BufferedImage
+    /**
+     * Convert a binary edge map to a black and white binary image.
+     * @param edges EdgeType matrix to process.
+     * @return Black and white binary image. 
+     */
     private static BufferedImage toBufferedImage(EdgeType[][] edges) {
         int width = edges.length;
         int height = edges[0].length;
@@ -315,23 +382,12 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         return image;
     }
 
-    // Save an image to file
+    // TODO: remove later
     private static void saveImage(BufferedImage image, String outputPath) {
         try {
             ImageIO.write(image, "jpg", new File(outputPath));
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    // Helper class to store gradient results
-    private static class GradientResult {
-        double[][] magnitude;
-        double[][] direction;
-
-        GradientResult(double[][] magnitude, double[][] direction) {
-            this.magnitude = magnitude;
-            this.direction = direction;
         }
     }
 }
