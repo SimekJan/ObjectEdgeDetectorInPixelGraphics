@@ -49,7 +49,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Load the image from file
-    public static BufferedImage loadImage(String filePath) {
+    private static BufferedImage loadImage(String filePath) {
         try {
             return ImageIO.read(new File(filePath));
         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Convert an image to grayscale
-    public static double[][] convertToGrayscale(BufferedImage coloredImage) {
+    private static double[][] convertToGrayscale(BufferedImage coloredImage) {
         int width = coloredImage.getWidth();
         int height = coloredImage.getHeight();
 
@@ -79,13 +79,13 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Apply Gaussian blur to smooth the image
-    public static double[][] applyGaussianBlur(double[][] image) {
-        double[][] kernel = generateGaussianKernel(5, 1.4); // Size 5x5, sigma 1.4
+    private static double[][] applyGaussianBlur(double[][] image) {
+        double[][] kernel = generateGaussianKernel(5, 1.4); // size 5x5, sigma 1.4
         return convolve(image, kernel);
     }
 
     // Generate a Gaussian kernel
-    public static double[][] generateGaussianKernel(int size, double sigma) {
+    private static double[][] generateGaussianKernel(int size, double sigma) {
         double[][] kernel = new double[size][size];
         double sum = 0.0;
         int halfSize = size / 2;
@@ -109,7 +109,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Convolve an image with a kernel
-    public static double[][] convolve(double[][] image, double[][] kernel) {
+    private static double[][] convolve(double[][] image, double[][] kernel) {
         int width = image.length;
         int height = image[0].length;
         int kernelSize = kernel.length;
@@ -141,7 +141,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Compute gradient magnitude and direction using Sobel operators
-    public static GradientResult computeGradient(double[][] image) {
+    private static GradientResult computeGradient(double[][] image) {
         int[][] sobelX = {
             {-1, 0, 1},
             {-2, 0, 2},
@@ -199,7 +199,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Non-maximum suppression to thin edges
-    public static double[][] nonMaximumSuppression(double[][] magnitude, double[][] direction) {
+    private static double[][] nonMaximumSuppression(double[][] magnitude, double[][] direction) {
         int width = magnitude.length;
         int height = magnitude[0].length;
         double[][] suppressed = new double[width][height];
@@ -247,7 +247,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     enum EdgeType {STRONG, WEAK, NONE}
     
     // Apply double thresholding
-    public static EdgeType[][] doubleThreshold(double[][] image, double lowThreshold, double highThreshold) {
+    private static EdgeType[][] doubleThreshold(double[][] image, double lowThreshold, double highThreshold) {
         int width = image.length;
         int height = image[0].length;
         EdgeType[][] edgeMap = new EdgeType[width][height];
@@ -269,7 +269,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Perform edge tracking by hysteresis
-    public static EdgeType[][] edgeTrackingByHysteresis(EdgeType[][] edgeMap) {
+    private static EdgeType[][] edgeTrackingByHysteresis(EdgeType[][] edgeMap) {
     int width = edgeMap.length;
     int height = edgeMap[0].length;
 
@@ -299,7 +299,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 }
 
     // Convert a binary edge map to a BufferedImage
-    public static BufferedImage toBufferedImage(EdgeType[][] edges) {
+    private static BufferedImage toBufferedImage(EdgeType[][] edges) {
         int width = edges.length;
         int height = edges[0].length;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
@@ -316,7 +316,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Save an image to file
-    public static void saveImage(BufferedImage image, String outputPath) {
+    private static void saveImage(BufferedImage image, String outputPath) {
         try {
             ImageIO.write(image, "jpg", new File(outputPath));
         } catch (IOException e) {
@@ -325,7 +325,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Helper class to store gradient results
-    static class GradientResult {
+    private static class GradientResult {
         double[][] magnitude;
         double[][] direction;
 
@@ -333,41 +333,5 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
             this.magnitude = magnitude;
             this.direction = direction;
         }
-    }
-    
-    public static double[][] computeGradientMagnitude(double[][] gx, double[][] gy) {
-        int width = gx.length;
-        int height = gx[0].length;
-        double[][] magnitude = new double[width][height];
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                magnitude[x][y] = Math.sqrt(gx[x][y] * gx[x][y] + gy[x][y] * gy[x][y]);
-            }
-        }
-        return magnitude;
-    }
-
-    public static double[][] computeGradientDirection(double[][] gx, double[][] gy) {
-        int width = gx.length;
-        int height = gx[0].length;
-        double[][] direction = new double[width][height];
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                direction[x][y] = Math.atan2(gy[x][y], gx[x][y]);
-            }
-        }
-        return direction;
-    }
-    
-    public static int quantizeDirection(double angle) {
-        angle = Math.toDegrees(angle);
-        if (angle < 0) angle += 180;
-
-        if ((angle >= 0 && angle < 22.5) || (angle >= 157.5 && angle <= 180)) return 0; // Horizontal
-        if (angle >= 22.5 && angle < 67.5) return 45; // Diagonal /
-        if (angle >= 67.5 && angle < 112.5) return 90; // Vertical
-        return 135; // Diagonal \
     }
 }
