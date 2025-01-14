@@ -122,14 +122,14 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                 double sum = 0.0;
                 for (int i = -offset; i <= offset; i++) {
                     for (int j = -offset; j <= offset; j++) {
-                        // fix edges
+                        // ensure edges of picture are in boundaries
                         int x_value = x + i; 
                         int y_value = y + j;
                         if (x_value < 0) x_value = 0;
                         if (x_value > width-1) x_value = width-1;
                         if (y_value < 0) y_value = 0;
                         if (y_value > height-1) y_value = height-1;
-
+                        // add the value
                         double value = image[x_value][y_value];
                         sum += value * kernel[i + offset][j + offset];
                     }
@@ -143,15 +143,15 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     // Compute gradient magnitude and direction using Sobel operators
     public static GradientResult computeGradient(double[][] image) {
         int[][] sobelX = {
-                {-1, 0, 1},
-                {-2, 0, 2},
-                {-1, 0, 1}
+            {-1, 0, 1},
+            {-2, 0, 2},
+            {-1, 0, 1}
         };
 
         int[][] sobelY = {
-                {1, 2, 1},
-                {0, 0, 0},
-                {-1, -2, -1}
+            {1, 2, 1},
+            {0, 0, 0},
+            {-1, -2, -1}
         };
 
         int width = image.length;
@@ -172,27 +172,30 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                 }
 
                 gradientMagnitude[x][y] = Math.sqrt(gx * gx + gy * gy);
-                gradientDirection[x][y] = Math.atan2(gy, gx); 
+                gradientDirection[x][y] = Math.atan2(gy, gx);
             }
         }
 
         // ensure edges aren't empty
-        for (int x = 0; x < width; x++) {
-            gradientMagnitude[x][0] = gradientMagnitude[x][1];
-            gradientDirection[x][0] = gradientDirection[x][1];
-            
-            gradientMagnitude[x][height-1] = gradientMagnitude[x][height-2];
-            gradientDirection[x][height-1] = gradientDirection[x][height-2];
-        }
-        for (int y = 0; y < height; y++) {
-            gradientMagnitude[0][y] = gradientMagnitude[1][y];
-            gradientDirection[0][y] = gradientDirection[1][y];
-            
-            gradientMagnitude[width-1][y] = gradientMagnitude[width-2][y];
-            gradientDirection[width-1][y] = gradientDirection[width-2][y];
-        }
+        fillEdgesWithCopiesOfInnerNeighbour(gradientMagnitude);
+        fillEdgesWithCopiesOfInnerNeighbour(gradientDirection);
 
         return new GradientResult(gradientMagnitude, gradientDirection);
+    }
+    
+    private static void fillEdgesWithCopiesOfInnerNeighbour(double[][] image) {
+        int width = image.length;
+        int height = image[0].length;
+        
+        for (int x = 0; x < width; x++) {
+            image[x][0] = image[x][1];
+            image[x][height-1] = image[x][height-2];
+        }
+        for (int y = 0; y < height; y++) {
+            image[0][y] = image[1][y];
+            image[width-1][y] = image[width-2][y];
+        }
+
     }
 
     // Non-maximum suppression to thin edges
@@ -236,14 +239,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         }
         
         // ensure edges aren't empty
-        for (int x = 0; x < width; x++) {
-            suppressed[x][0] = suppressed[x][1];
-            suppressed[x][height-1] = suppressed[x][height-2];
-        }
-        for (int y = 0; y < height; y++) {
-            suppressed[0][y] = suppressed[1][y];
-            suppressed[width-1][y] = suppressed[width-2][y];
-        }
+        fillEdgesWithCopiesOfInnerNeighbour(suppressed);
         
         return suppressed;
     }
