@@ -34,10 +34,10 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         double[][] suppressedImage = nonMaximumSuppression(gradientResult.magnitude, gradientResult.direction);
         
         // Step 6: Apply double thresholding
-        int[][] edgeMap = doubleThreshold(suppressedImage, 50, 150);
+        EdgeType[][] edgeMap = doubleThreshold(suppressedImage, 50, 150);
 
         // Step 7: Perform edge tracking by hysteresis
-        int[][] finalEdges = edgeTrackingByHysteresis(edgeMap);
+        EdgeType[][] finalEdges = edgeTrackingByHysteresis(edgeMap);
 
         // Step 8: Convert result to BufferedImage and save
         BufferedImage outputImage = toBufferedImage(finalEdges);
@@ -243,23 +243,25 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         
         return suppressed;
     }
-
+    
+    enum EdgeType {STRONG, WEAK, NONE}
+    
     // Apply double thresholding
-    public static int[][] doubleThreshold(double[][] image, double lowThreshold, double highThreshold) {
+    public static EdgeType[][] doubleThreshold(double[][] image, double lowThreshold, double highThreshold) {
         int width = image.length;
         int height = image[0].length;
-        int[][] edgeMap = new int[width][height];
+        EdgeType[][] edgeMap = new EdgeType[width][height];
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 double pixel = image[x][y];
 
                 if (pixel >= highThreshold) {
-                    edgeMap[x][y] = 2; // Strong edge
+                    edgeMap[x][y] = EdgeType.STRONG;
                 } else if (pixel >= lowThreshold) {
-                    edgeMap[x][y] = 1; // Weak edge
+                    edgeMap[x][y] = EdgeType.WEAK;
                 } else {
-                    edgeMap[x][y] = 0; // Non-edge
+                    edgeMap[x][y] = EdgeType.NONE;
                 }
             }
         }
@@ -267,19 +269,19 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Perform edge tracking by hysteresis
-    public static int[][] edgeTrackingByHysteresis(int[][] edgeMap) {
+    public static EdgeType[][] edgeTrackingByHysteresis(EdgeType[][] edgeMap) {
     int width = edgeMap.length;
     int height = edgeMap[0].length;
 
     for (int x = 1; x < width - 1; x++) {
         for (int y = 1; y < height - 1; y++) {
-            if (edgeMap[x][y] == 1) { // Weak edge
+            if (edgeMap[x][y] == EdgeType.WEAK) {
                 // Check 8-connected neighborhood for a strong edge
                 boolean connectedToStrongEdge = false;
 
                 for (int dx = -1; dx <= 1; dx++) {
                     for (int dy = -1; dy <= 1; dy++) {
-                        if (edgeMap[x + dx][y + dy] == 2) { // Strong edge
+                        if (edgeMap[x + dx][y + dy] == EdgeType.STRONG) { // Strong edge
                             connectedToStrongEdge = true;
                             break;
                         }
@@ -288,15 +290,8 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                 }
 
                 // If connected to a strong edge, promote to strong; otherwise, suppress
-                edgeMap[x][y] = connectedToStrongEdge ? 2 : 0;
+                edgeMap[x][y] = connectedToStrongEdge ? EdgeType.STRONG : EdgeType.NONE;
             }
-        }
-    }
-
-    // Convert edge map to binary (0 = no edge, 255 = edge)
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            edgeMap[x][y] = (edgeMap[x][y] == 2) ? 255 : 0;
         }
     }
 
@@ -304,14 +299,14 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 }
 
     // Convert a binary edge map to a BufferedImage
-    public static BufferedImage toBufferedImage(int[][] edges) {
+    public static BufferedImage toBufferedImage(EdgeType[][] edges) {
         int width = edges.length;
         int height = edges[0].length;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                int value = edges[x][y] > 0 ? 255 : 0;
+                int value = edges[x][y] == EdgeType.STRONG ? 255 : 0;
                 int newPixel = (value << 16) | (value << 8) | value;
                 image.setRGB(x, y, newPixel);
             }
