@@ -20,14 +20,9 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     public Mat run(String image_name) {
         // Step 1: Load the image
         BufferedImage image = loadImage(image_name);
-        // TODO: make better
-        /*if (image == null) {
-            System.out.println("Error loading image.");
-            return;
-        }*/
 
         // Step 2: Convert to grayscale if necessary
-        BufferedImage grayscaleImage = convertToGrayscale(image);
+        double[][] grayscaleImage = convertToGrayscale(image);
 
         // Step 3: Apply Gaussian smoothing
         double[][] smoothedImage = applyGaussianBlur(grayscaleImage);
@@ -39,7 +34,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         double[][] suppressedImage = nonMaximumSuppression(gradientResult.magnitude, gradientResult.direction);
         
         // Step 6: Apply double thresholding
-        int[][] edgeMap = doubleThreshold(suppressedImage, 30, 100);
+        int[][] edgeMap = doubleThreshold(suppressedImage, 50, 150);
 
         // Step 7: Perform edge tracking by hysteresis
         int[][] finalEdges = edgeTrackingByHysteresis(edgeMap);
@@ -64,11 +59,12 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Convert an image to grayscale
-    public static BufferedImage convertToGrayscale(BufferedImage coloredImage) {
+    public static double[][] convertToGrayscale(BufferedImage coloredImage) {
         int width = coloredImage.getWidth();
         int height = coloredImage.getHeight();
-        BufferedImage grayscaleImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
 
+        double[][] grayscaleImage = new double[width][height];
+        
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 int rgb = coloredImage.getRGB(x, y);
@@ -76,15 +72,14 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                 int green = (rgb >> 8) & 0xFF;
                 int blue = rgb & 0xFF;
                 int gray = (red + green + blue) / 3;
-                int newPixel = (gray << 16) | (gray << 8) | gray;
-                grayscaleImage.setRGB(x, y, newPixel);
+                grayscaleImage[x][y] = gray;
             }
         }
         return grayscaleImage;
     }
 
     // Apply Gaussian blur to smooth the image
-    public static double[][] applyGaussianBlur(BufferedImage image) {
+    public static double[][] applyGaussianBlur(double[][] image) {
         double[][] kernel = generateGaussianKernel(5, 1.4); // Size 5x5, sigma 1.4
         return convolve(image, kernel);
     }
@@ -114,9 +109,9 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     }
 
     // Convolve an image with a kernel
-    public static double[][] convolve(BufferedImage image, double[][] kernel) {
-        int width = image.getWidth();
-        int height = image.getHeight();
+    public static double[][] convolve(double[][] image, double[][] kernel) {
+        int width = image.length;
+        int height = image[0].length;
         int kernelSize = kernel.length;
         int offset = kernelSize / 2;
 
@@ -127,36 +122,21 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                 double sum = 0.0;
                 for (int i = -offset; i <= offset; i++) {
                     for (int j = -offset; j <= offset; j++) {
-                        
+                        // fix edges
                         int x_value = x + i; 
                         int y_value = y + j;
-                        
                         if (x_value < 0) x_value = 0;
                         if (x_value > width-1) x_value = width-1;
                         if (y_value < 0) y_value = 0;
                         if (y_value > height-1) y_value = height-1;
-                        
-                        int pixel = new java.awt.Color(image.getRGB(x_value, y_value)).getRed();
-                        sum += pixel * kernel[i + offset][j + offset];
+
+                        double value = image[x_value][y_value];
+                        sum += value * kernel[i + offset][j + offset];
                     }
                 }
                 result[x][y] = sum;
             }
         }
-/*
-        for (int x = offset; x < width - offset; x++) {
-            for (int y = offset; y < height - offset; y++) {
-                double sum = 0.0;
-                for (int i = -offset; i <= offset; i++) {
-                    for (int j = -offset; j <= offset; j++) {
-                        int pixel = new java.awt.Color(image.getRGB(x + i, y + j)).getRed();
-                        sum += pixel * kernel[i + offset][j + offset];
-                    }
-                }
-                result[x][y] = sum;
-            }
-        }
-*/
         return result;
     }
 
