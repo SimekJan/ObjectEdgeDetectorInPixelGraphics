@@ -5,12 +5,20 @@
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.KeyPoint;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfKeyPoint;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.features2d.Features2d;
+import org.opencv.features2d.SIFT;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -22,14 +30,18 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
 
     @Override
     public Mat run(String image_name) {
-        Mat image = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);        
-        image = AdjustBrightness(image);
+        Mat inputImage = Imgcodecs.imread(image_name);
         
+        
+        
+        /*
         // Step 1: DoG
         List<Mat> diff_of_gs = ComputeDifferenceOfGaussians(PrepareBluredImages(image, 8));
-        
+                
         // Step 2: KeyPoints
-        List<KeyPoint> keypoints = FinfKeyPoints(diff_of_gs, 10); 
+        List<KeyPoint> keypoints = FindKeyPoints(diff_of_gs, 10); 
+        
+        System.out.println(keypoints.size());
         
         // Imgproc.threshold(combinedImage, combinedImage, 10, 255, Imgproc.THRESH_BINARY);
         
@@ -102,9 +114,60 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
      * @param threshold Threshold for determining if is valid point.
      * @return List of edge-keypoints.
      */
-    private List<KeyPoint> FinfKeyPoints(List<Mat> dog_list, double threshold) {
+    private List<KeyPoint> FindKeyPoints(List<Mat> dog_list, double threshold) {
         List<KeyPoint> keypoints = new ArrayList<>();
-        // TODO
+        
+        for (int i = 1; i < dog_list.size() - 1; i++) {
+            Mat current_dog = dog_list.get(i);
+            Mat prev_dog = dog_list.get(i - 1);
+            Mat next_dog = dog_list.get(i + 1);
+
+            for (int y = 1; y < current_dog.rows() - 1; y++) {
+                for (int x = 1; x < current_dog.cols() - 1; x++) {
+                    double current_val = current_dog.get(y, x)[0];
+
+                    boolean is_local_extrema = true;
+                    for (int dy = -1; dy <= 1; dy++) {
+                        for (int dx = -1; dx <= 1; dx++) {
+                            if (current_val <= current_dog.get(y + dy, x + dx)[0]) {
+                                is_local_extrema = false;
+                                break;
+                            }
+                        }
+                        if (!is_local_extrema) break;
+                    }
+
+                    for (int dy = -1; dy <= 1; dy++) {
+                        for (int dx = -1; dx <= 1; dx++) {
+                            if (current_val <= prev_dog.get(y + dy, x + dx)[0] || current_val <= next_dog.get(y + dy, x + dx)[0]) {
+                                is_local_extrema = false;
+                                break;
+                            }
+                        }
+                        if (!is_local_extrema) break;
+                    }
+
+                    if (is_local_extrema && Math.abs(current_val) > threshold) {
+                        KeyPoint keypoint = new KeyPoint(x, y, 1);
+                        keypoints.add(keypoint);
+                    }
+                }
+            }
+        }
+        
+        // TODO: remove later from here
+        MatOfKeyPoint matOfKeyPoints = new MatOfKeyPoint();
+        matOfKeyPoints.fromList(keypoints);
+
+        // Draw the keypoints onto the blank image
+        Mat outputImage = dog_list.get(0).clone();
+        Imgproc.threshold(outputImage, outputImage, 0, 0, Imgproc.THRESH_BINARY);
+
+        Features2d.drawKeypoints(outputImage, matOfKeyPoints, outputImage, new Scalar(0, 255, 0));
+
+        // Save the output image with keypoints drawn
+        Imgcodecs.imwrite("keypoints_output.png", outputImage);
+        
         return keypoints;
     }
     
