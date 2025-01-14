@@ -37,11 +37,9 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 
         // Step 5: Apply non-maximum suppression
         double[][] suppressedImage = nonMaximumSuppression(gradientResult.magnitude, gradientResult.direction);
-
-        printDoubleArray(suppressedImage);
         
         // Step 6: Apply double thresholding
-        int[][] edgeMap = doubleThreshold(suppressedImage, 50, 150);
+        int[][] edgeMap = doubleThreshold(suppressedImage, 30, 100);
 
         // Step 7: Perform edge tracking by hysteresis
         int[][] finalEdges = edgeTrackingByHysteresis(edgeMap);
@@ -53,16 +51,6 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         System.out.println("Canny edge detection completed. Output saved to: " + "test.jpg");
         
         return new Mat();
-    }
-    
-    // TODO: only for debuging, remove later
-    public static void printDoubleArray(double[][] array) {
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                System.out.printf("%.2f ", array[i][j]); // Print each element with 2 decimal places
-            }
-            System.out.println(); // Move to the next line after each row
-        }
     }
 
     // Load the image from file
@@ -266,6 +254,17 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                 }
             }
         }
+        
+        // ensure edges aren't empty
+        for (int x = 0; x < width; x++) {
+            suppressed[x][0] = suppressed[x][1];
+            suppressed[x][height-1] = suppressed[x][height-2];
+        }
+        for (int y = 0; y < height; y++) {
+            suppressed[0][y] = suppressed[1][y];
+            suppressed[width-1][y] = suppressed[width-2][y];
+        }
+        
         return suppressed;
     }
 
