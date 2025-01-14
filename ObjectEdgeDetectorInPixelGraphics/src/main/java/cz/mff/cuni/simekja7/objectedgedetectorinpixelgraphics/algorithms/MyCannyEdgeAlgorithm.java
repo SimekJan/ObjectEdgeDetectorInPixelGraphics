@@ -31,13 +31,15 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 
         // Step 3: Apply Gaussian smoothing
         double[][] smoothedImage = applyGaussianBlur(grayscaleImage);
-
+        
         // Step 4: Compute gradient magnitude and direction
         GradientResult gradientResult = computeGradient(smoothedImage);
 
         // Step 5: Apply non-maximum suppression
         double[][] suppressedImage = nonMaximumSuppression(gradientResult.magnitude, gradientResult.direction);
 
+        printDoubleArray(suppressedImage);
+        
         // Step 6: Apply double thresholding
         int[][] edgeMap = doubleThreshold(suppressedImage, 50, 150);
 
@@ -51,6 +53,16 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         System.out.println("Canny edge detection completed. Output saved to: " + "test.jpg");
         
         return new Mat();
+    }
+    
+    // TODO: only for debuging, remove later
+    public static void printDoubleArray(double[][] array) {
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                System.out.printf("%.2f ", array[i][j]); // Print each element with 2 decimal places
+            }
+            System.out.println(); // Move to the next line after each row
+        }
     }
 
     // Load the image from file
@@ -122,6 +134,28 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 
         double[][] result = new double[width][height];
 
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                double sum = 0.0;
+                for (int i = -offset; i <= offset; i++) {
+                    for (int j = -offset; j <= offset; j++) {
+                        
+                        int x_value = x + i; 
+                        int y_value = y + j;
+                        
+                        if (x_value < 0) x_value = 0;
+                        if (x_value > width-1) x_value = width-1;
+                        if (y_value < 0) y_value = 0;
+                        if (y_value > height-1) y_value = height-1;
+                        
+                        int pixel = new java.awt.Color(image.getRGB(x_value, y_value)).getRed();
+                        sum += pixel * kernel[i + offset][j + offset];
+                    }
+                }
+                result[x][y] = sum;
+            }
+        }
+/*
         for (int x = offset; x < width - offset; x++) {
             for (int y = offset; y < height - offset; y++) {
                 double sum = 0.0;
@@ -134,6 +168,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                 result[x][y] = sum;
             }
         }
+*/
         return result;
     }
 
@@ -169,8 +204,24 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                 }
 
                 gradientMagnitude[x][y] = Math.sqrt(gx * gx + gy * gy);
-                gradientDirection[x][y] = Math.atan2(gy, gx);
+                gradientDirection[x][y] = Math.atan2(gy, gx); 
             }
+        }
+
+        // ensure edges aren't empty
+        for (int x = 0; x < width; x++) {
+            gradientMagnitude[x][0] = gradientMagnitude[x][1];
+            gradientDirection[x][0] = gradientDirection[x][1];
+            
+            gradientMagnitude[x][height-1] = gradientMagnitude[x][height-2];
+            gradientDirection[x][height-1] = gradientDirection[x][height-2];
+        }
+        for (int y = 0; y < height; y++) {
+            gradientMagnitude[0][y] = gradientMagnitude[1][y];
+            gradientDirection[0][y] = gradientDirection[1][y];
+            
+            gradientMagnitude[width-1][y] = gradientMagnitude[width-2][y];
+            gradientDirection[width-1][y] = gradientDirection[width-2][y];
         }
 
         return new GradientResult(gradientMagnitude, gradientDirection);
