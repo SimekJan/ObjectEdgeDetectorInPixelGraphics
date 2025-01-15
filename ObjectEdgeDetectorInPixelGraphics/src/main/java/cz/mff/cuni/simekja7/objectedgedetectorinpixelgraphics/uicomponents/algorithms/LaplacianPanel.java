@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  * @author simek.jan
  */
 public class LaplacianPanel extends AlgorithmPanel {
-    public LaplacianPanel(boolean includeRunButton) {
+    public LaplacianPanel() {
         setLayout(new BorderLayout());
         JPanel pt = new JPanel();
         add(pt, BorderLayout.NORTH);
@@ -39,11 +39,6 @@ public class LaplacianPanel extends AlgorithmPanel {
         comboBox2.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 25));
         add(pc, BorderLayout.CENTER);
         pc.add(comboBox2);
-        
-        if (includeRunButton) {
-            JButton runButton = new JButton("Run");
-            add(runButton, BorderLayout.SOUTH);
-        }
     }
 
     @Override

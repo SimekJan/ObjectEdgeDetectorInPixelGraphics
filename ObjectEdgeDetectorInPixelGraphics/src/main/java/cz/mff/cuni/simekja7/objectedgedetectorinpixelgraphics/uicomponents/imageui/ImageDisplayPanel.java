@@ -10,6 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.image.BufferedImage;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +21,9 @@ import javax.swing.SwingConstants;
  * @author simek.jan
  */
 public class ImageDisplayPanel extends JPanel {
+    
+    private ImageLoaderComponent imageLoader;
+    
     public ImageDisplayPanel() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -30,7 +34,7 @@ public class ImageDisplayPanel extends JPanel {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(40, 40, 20, 0);
-        ImageLoaderComponent imageLoader = new ImageLoaderComponent();
+        imageLoader = new ImageLoaderComponent();
         add(imageLoader, gbc);
 
         JPanel middlePanel = new JPanel();
@@ -61,5 +65,9 @@ public class ImageDisplayPanel extends JPanel {
         gbc.insets = new Insets(40, 0, 20, 40);
         ImageResultDisplayComponent resultImagePanel = new ImageResultDisplayComponent();
         add(resultImagePanel, gbc);
+    }
+    
+    public BufferedImage getInputImage() {
+        return imageLoader.getImage();
     }
 }

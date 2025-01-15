@@ -21,7 +21,7 @@ import javax.swing.event.ChangeListener;
  * @author simek.jan
  */
 public class SiftPanel extends AlgorithmPanel {
-    public SiftPanel(boolean includeRunButton) {
+    public SiftPanel() {
         setLayout(new BorderLayout());
         
         JPanel pt = new JPanel();
@@ -71,12 +71,6 @@ public class SiftPanel extends AlgorithmPanel {
         pt.add(p1);
         pt.add(p2);
         pt.add(p3);
-        
-        
-        if (includeRunButton) {
-            JButton runButton = new JButton("Run");
-            add(runButton, BorderLayout.SOUTH);
-        }
     }
 
     @Override

@@ -7,7 +7,6 @@ package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algo
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SobelEdgeAlgorithm;
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,7 +16,7 @@ import javax.swing.JPanel;
  * @author simek.jan
  */
 public class SobelPanel extends AlgorithmPanel {
-    public SobelPanel(boolean includeRunButton) {
+    public SobelPanel() {
         setLayout(new BorderLayout());
         JPanel pt = new JPanel();
         add(pt, BorderLayout.NORTH);
@@ -27,11 +26,6 @@ public class SobelPanel extends AlgorithmPanel {
         JComboBox<String> comboBox = new JComboBox<>(new String[]{"3x3", "5x5", "7x7", "9x9"});
         add(pc, BorderLayout.CENTER);
         pc.add(comboBox);
-        
-        if (includeRunButton) {
-            JButton runButton = new JButton("Run");
-            add(runButton, BorderLayout.SOUTH);
-        }
     }
 
     @Override

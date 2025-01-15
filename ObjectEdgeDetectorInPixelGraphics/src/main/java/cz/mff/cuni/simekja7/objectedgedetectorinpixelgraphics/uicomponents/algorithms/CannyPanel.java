@@ -22,7 +22,7 @@ import javax.swing.event.ChangeListener;
  * @author simek.jan
  */
 public class CannyPanel extends AlgorithmPanel{
-    public CannyPanel(boolean includeRunButton) {
+    public CannyPanel() {
         setLayout(new BorderLayout());
         
         JPanel topPanel = new JPanel();
@@ -68,11 +68,6 @@ public class CannyPanel extends AlgorithmPanel{
         topPanel.add(rightPanel);
  
         add(topPanel, BorderLayout.CENTER);
-        
-        if (includeRunButton) {
-            JButton runButton = new JButton("Run");
-            add(runButton, BorderLayout.SOUTH);
-        }
     }
 
     @Override

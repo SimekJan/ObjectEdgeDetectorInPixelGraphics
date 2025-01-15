@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -19,6 +20,15 @@ import javax.swing.JTabbedPane;
  * @author simek.jan
  */
 public class UIGenerator {
+    
+    static ImageDisplayPanel displayPanel;
+    static CannyPanel cannyPanel;
+    static SobelPanel sobelPanel;
+    static LaplacianPanel laplacianPanel;
+    static SiftPanel siftPanel;
+    static CustomCannyPanel customCannyPanel;
+    static CombinePanel combinePanel;
+    
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("Object Edge Detector In Pixel Graphics");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,32 +40,46 @@ public class UIGenerator {
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1,1));
-        topPanel.add(new ImageDisplayPanel());
+        displayPanel = new ImageDisplayPanel();
+        topPanel.add(displayPanel);
         frame.add(topPanel, BorderLayout.CENTER);
         
         // Create the tabbed pane
+        JPanel tablePanel = new JPanel();
+        tablePanel.setLayout(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane();
 
         // Tab 1: Panel for CannyEedge library implementation
-        tabbedPane.addTab("Canny Edge", new CannyPanel(true));
+        cannyPanel = new CannyPanel();
+        tabbedPane.addTab("Canny Edge", cannyPanel);
 
         // Tab 2: Panel for Sobel library implementation
-        tabbedPane.addTab("Sobel", new SobelPanel(true));
+        sobelPanel =  new SobelPanel();
+        tabbedPane.addTab("Sobel", sobelPanel);
 
         // Tab 3: Panel for Laplacian library implementation
-        tabbedPane.addTab("Laplacian", new LaplacianPanel(true));
+        laplacianPanel = new LaplacianPanel();
+        tabbedPane.addTab("Laplacian", laplacianPanel);
 
         // Tab 4: Panel for what's left from SIFT attempt
-        tabbedPane.addTab("SIFT", new SiftPanel(true));
+        siftPanel = new SiftPanel();
+        tabbedPane.addTab("SIFT", siftPanel);
         
         // Tab 5: Panel for custom Canny Edge implementation
-        tabbedPane.addTab("Custom CE", new CustomCannyPanel(true));
+        customCannyPanel = new CustomCannyPanel();
+        tabbedPane.addTab("Custom CE", customCannyPanel);
         
         // Tab 5: Panel for mixing algorithms
-        tabbedPane.addTab("Combine Alg", new CombinePanel());
+        combinePanel = new CombinePanel();
+        tabbedPane.addTab("Combine Alg", combinePanel);
+        
+        JButton runButton = new JButton("Run");
+        
+        tablePanel.add(tabbedPane, BorderLayout.CENTER);
+        tablePanel.add(runButton, BorderLayout.SOUTH);
         
         // Add the tabbed pane to the frame
-        frame.add(tabbedPane, BorderLayout.SOUTH);
+        frame.add(tablePanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
     }
