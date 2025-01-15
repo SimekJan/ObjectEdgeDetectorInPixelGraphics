@@ -4,12 +4,11 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.helpers.MatToBufferedImageConvertor;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.helpers.MatBufferedImageConvertor;
 import java.awt.image.BufferedImage;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -21,8 +20,8 @@ public class SobelEdgeAlgorithm extends EdgeAlgorithm {
     static int ksize = 3;
     
     @Override
-    public BufferedImage run(String image_name) {
-        Mat src = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);
+    public BufferedImage run(BufferedImage inputImage) {
+        Mat src = MatBufferedImageConvertor.bufferedImageToMat(inputImage);
         
         Mat sobelX = new Mat();
         Imgproc.Sobel(src, sobelX, CvType.CV_16S, 1, 0, ksize, 1, 0, Core.BORDER_DEFAULT);
@@ -38,7 +37,7 @@ public class SobelEdgeAlgorithm extends EdgeAlgorithm {
         Mat sobelCombined = new Mat();
         Core.addWeighted(absSobelX, 0.5, absSobelY, 0.5, 0, sobelCombined);
                         
-        BufferedImage toReturn = MatToBufferedImageConvertor.convert(sobelCombined);
+        BufferedImage toReturn = MatBufferedImageConvertor.matToBufferedImage(sobelCombined);
         
         return toReturn;
     }

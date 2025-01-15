@@ -22,46 +22,30 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     int high_threshold = 150;
     
     @Override
-    public BufferedImage run(String image_name) {
-        // Step 1: Load the image
-        BufferedImage image = loadImage(image_name);
+    public BufferedImage run(BufferedImage inputImage) {
+        
+        // Step 1: Convert to grayscale if necessary
+        double[][] grayscaleImage = convertToGrayscale(inputImage);
 
-        // Step 2: Convert to grayscale if necessary
-        double[][] grayscaleImage = convertToGrayscale(image);
-
-        // Step 3: Apply Gaussian smoothing
+        // Step 2: Apply Gaussian smoothing
         double[][] smoothedImage = applyGaussianBlur(grayscaleImage);
         
-        // Step 4: Compute gradient magnitude and direction
+        // Step 3: Compute gradient magnitude and direction
         GradientResult gradientResult = computeGradient(smoothedImage);
 
-        // Step 5: Apply non-maximum suppression
+        // Step 4: Apply non-maximum suppression
         double[][] suppressedImage = nonMaximumSuppression(gradientResult.magnitude, gradientResult.direction);
         
-        // Step 6: Apply double thresholding
+        // Step 5: Apply double thresholding
         EdgeType[][] edgeMap = doubleThreshold(suppressedImage, low_threshold, high_threshold);
 
-        // Step 7: Perform edge tracking by hysteresis
+        // Step 6: Perform edge tracking by hysteresis
         EdgeType[][] finalEdges = edgeTrackingByHysteresis(edgeMap);
 
-        // Step 8: Convert result to BufferedImage and save
+        // Step 7: Convert result to BufferedImage and save
         BufferedImage outputImage = toBufferedImage(finalEdges);
         
         return outputImage;
-    }
-
-    /**
-     * Load image from file to BufferedImage.
-     * @param filePath Path to the image.
-     * @return Processed image to use.
-     */
-    private static BufferedImage loadImage(String filePath) {
-        try {
-            return ImageIO.read(new File(filePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**

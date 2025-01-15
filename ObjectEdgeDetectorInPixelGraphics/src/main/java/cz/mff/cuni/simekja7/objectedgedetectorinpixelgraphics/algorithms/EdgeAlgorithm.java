@@ -13,8 +13,8 @@ import java.awt.image.BufferedImage;
 public abstract class EdgeAlgorithm {
     /**
      * Runs concrete algorithm.
-     * @param image_name Path to image to run the algorithm on.
+     * @param inputImage
      * @return Mat with the edges.
      */
-    public abstract BufferedImage run(String image_name);
+    public abstract BufferedImage run(BufferedImage inputImage);
 }

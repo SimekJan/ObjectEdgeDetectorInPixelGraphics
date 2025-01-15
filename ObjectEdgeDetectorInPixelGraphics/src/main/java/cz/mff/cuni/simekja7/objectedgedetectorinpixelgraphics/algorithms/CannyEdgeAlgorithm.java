@@ -4,10 +4,9 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.helpers.MatToBufferedImageConvertor;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.helpers.MatBufferedImageConvertor;
 import java.awt.image.BufferedImage;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -20,11 +19,11 @@ public class CannyEdgeAlgorithm extends EdgeAlgorithm {
     static int treshold2 = 400;
     
     @Override
-    public BufferedImage run(String image_name) {
-        Mat image = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);
+    public BufferedImage run(BufferedImage inputImage) {
+        Mat image = MatBufferedImageConvertor.bufferedImageToMat(inputImage);
         Mat edges = new Mat();
         Imgproc.Canny(image, edges, treshold1, treshold2);
-        BufferedImage toReturn = MatToBufferedImageConvertor.convert(edges);
+        BufferedImage toReturn = MatBufferedImageConvertor.matToBufferedImage(edges);
         return toReturn;
     }    
 }

@@ -4,13 +4,12 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.helpers.MatToBufferedImageConvertor;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.helpers.MatBufferedImageConvertor;
 import java.awt.image.BufferedImage;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -24,8 +23,8 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
     int threshold = 40;
     
     @Override
-    public BufferedImage run(String image_name) {
-        Mat image = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);
+    public BufferedImage run(BufferedImage inputImage) {
+        Mat image = MatBufferedImageConvertor.bufferedImageToMat(inputImage);
         
         Mat lowBlur = new Mat();
         Mat highBlur = new Mat();
@@ -39,7 +38,7 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
         
         Imgproc.threshold(image, image, threshold, 255, Imgproc.THRESH_BINARY);
                 
-        BufferedImage toReturn = MatToBufferedImageConvertor.convert(image);
+        BufferedImage toReturn = MatBufferedImageConvertor.matToBufferedImage(image);
         
         return toReturn;
     }
