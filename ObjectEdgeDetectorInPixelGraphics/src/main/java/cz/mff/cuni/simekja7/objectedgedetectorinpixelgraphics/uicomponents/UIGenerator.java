@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -69,11 +70,17 @@ public class UIGenerator {
         customCannyPanel = new CustomCannyPanel();
         tabbedPane.addTab("Custom CE", customCannyPanel);
         
-        // Tab 5: Panel for mixing algorithms
+        // Tab 6: Panel for mixing algorithms
         combinePanel = new CombinePanel();
         tabbedPane.addTab("Combine Alg", combinePanel);
         
         JButton runButton = new JButton("Run");
+        runButton.addActionListener(e -> {
+            AlgorithmPanel selectedPanel = (AlgorithmPanel) tabbedPane.getSelectedComponent();
+            BufferedImage input = displayPanel.getInputImage();
+            BufferedImage result = selectedPanel.runAlgorithm(input);
+            displayPanel.setOutputImage(result);
+        });
         
         tablePanel.add(tabbedPane, BorderLayout.CENTER);
         tablePanel.add(runButton, BorderLayout.SOUTH);

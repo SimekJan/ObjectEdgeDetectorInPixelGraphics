@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
 public class ImageDisplayPanel extends JPanel {
     
     private ImageLoaderComponent imageLoader;
+    private ImageResultDisplayComponent resultImagePanel;
     
     public ImageDisplayPanel() {
         setLayout(new GridBagLayout());
@@ -63,11 +64,15 @@ public class ImageDisplayPanel extends JPanel {
         gbc.gridx = 2; 
         gbc.weightx = 1.0;
         gbc.insets = new Insets(40, 0, 20, 40);
-        ImageResultDisplayComponent resultImagePanel = new ImageResultDisplayComponent();
+        resultImagePanel = new ImageResultDisplayComponent();
         add(resultImagePanel, gbc);
     }
     
     public BufferedImage getInputImage() {
         return imageLoader.getImage();
+    }
+    
+    public void setOutputImage(BufferedImage image) {
+        resultImagePanel.setImage(image);
     }
 }
