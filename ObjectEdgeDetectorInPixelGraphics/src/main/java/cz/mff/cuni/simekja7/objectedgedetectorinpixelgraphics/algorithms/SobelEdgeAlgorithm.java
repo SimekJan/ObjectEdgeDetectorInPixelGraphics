@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -17,7 +18,7 @@ import org.opencv.imgproc.Imgproc;
  */
 public class SobelEdgeAlgorithm extends EdgeAlgorithm {
 
-    static int ksize = 3;
+    public static int ksize = 3;
     
     @Override
     public BufferedImage run(BufferedImage inputImage) {
@@ -36,7 +37,7 @@ public class SobelEdgeAlgorithm extends EdgeAlgorithm {
 
         Mat sobelCombined = new Mat();
         Core.addWeighted(absSobelX, 0.5, absSobelY, 0.5, 0, sobelCombined);
-                        
+        
         BufferedImage toReturn = MatBufferedImageConvertor.matToBufferedImage(sobelCombined);
         
         return toReturn;

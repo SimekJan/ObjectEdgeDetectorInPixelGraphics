@@ -8,7 +8,6 @@ import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.MyCanny
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

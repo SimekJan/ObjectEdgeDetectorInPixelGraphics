@@ -5,7 +5,10 @@
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.LaplacianEdgeAlgorithm;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SobelEdgeAlgorithm;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,11 +35,23 @@ public class LaplacianPanel extends AlgorithmPanel {
         JPanel pc = new JPanel();
         JComboBox<String> comboBox1 = new JComboBox<>(new String[]{"3x3", "5x5", "7x7"});
         comboBox1.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 15));
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LaplacianEdgeAlgorithm.blur_size = Integer.parseInt(((String)comboBox1.getSelectedItem()).substring(0, 1));
+            }
+        });
         add(pc, BorderLayout.CENTER);
         pc.add(comboBox1);
         
         JComboBox<String> comboBox2 = new JComboBox<>(new String[]{"3x3", "5x5", "7x7", "9x9"});
         comboBox2.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 25));
+        comboBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LaplacianEdgeAlgorithm.ksize = Integer.parseInt(((String)comboBox2.getSelectedItem()).substring(0, 1));
+            }
+        });
         add(pc, BorderLayout.CENTER);
         pc.add(comboBox2);
     }

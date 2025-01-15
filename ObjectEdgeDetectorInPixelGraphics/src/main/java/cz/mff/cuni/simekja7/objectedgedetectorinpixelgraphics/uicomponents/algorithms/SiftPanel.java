@@ -6,9 +6,10 @@ package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algo
 
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SiftEdgeAlgorithm;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +36,12 @@ public class SiftPanel extends AlgorithmPanel {
         p1.add(l1, BorderLayout.NORTH);
         JComboBox<Double> comboBox1 = new JComboBox<>(new Double[]{1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
         comboBox1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SiftEdgeAlgorithm.sigma1 = (Double)comboBox1.getSelectedItem();
+            }
+        });
         p1.add(comboBox1, BorderLayout.CENTER);
         
         
@@ -45,6 +52,12 @@ public class SiftPanel extends AlgorithmPanel {
         p2.add(l2, BorderLayout.NORTH);
         JComboBox<Double> comboBox2 = new JComboBox<>(new Double[]{2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0});
         comboBox2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        comboBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SiftEdgeAlgorithm.sigma2 = (Double)comboBox2.getSelectedItem();
+            }
+        });
         p2.add(comboBox2, BorderLayout.CENTER);
 
         
@@ -62,6 +75,7 @@ public class SiftPanel extends AlgorithmPanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 l3.setText(String.valueOf("     Threshold:   " + s.getValue())); 
+                SiftEdgeAlgorithm.threshold = s.getValue();
             }
         });
         s.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

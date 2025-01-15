@@ -18,8 +18,8 @@ import org.opencv.imgproc.Imgproc;
  */
 public class LaplacianEdgeAlgorithm extends EdgeAlgorithm {
 
-    int blur_size = 3;
-    int ksize = 3;
+    public static int blur_size = 3;
+    public static int ksize = 3;
     
     @Override
     public BufferedImage run(BufferedImage inputImage) {

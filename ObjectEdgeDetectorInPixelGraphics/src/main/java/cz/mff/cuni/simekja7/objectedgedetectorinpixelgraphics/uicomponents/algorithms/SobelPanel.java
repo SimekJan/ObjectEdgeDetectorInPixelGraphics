@@ -6,6 +6,8 @@ package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algo
 
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SobelEdgeAlgorithm;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -24,6 +26,12 @@ public class SobelPanel extends AlgorithmPanel {
         
         JPanel pc = new JPanel();
         JComboBox<String> comboBox = new JComboBox<>(new String[]{"3x3", "5x5", "7x7", "9x9"});
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SobelEdgeAlgorithm.ksize = Integer.parseInt(((String)comboBox.getSelectedItem()).substring(0, 1));
+            }
+        });
         add(pc, BorderLayout.CENTER);
         pc.add(comboBox);
     }

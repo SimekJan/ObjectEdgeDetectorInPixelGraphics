@@ -18,9 +18,9 @@ import org.opencv.imgproc.Imgproc;
  */
 public class SiftEdgeAlgorithm extends EdgeAlgorithm {
 
-    double sigma1 = 1.0;
-    double sigma2 = 4.0;
-    int threshold = 40;
+    public static double sigma1 = 1.0;
+    public static double sigma2 = 4.0;
+    public static int threshold = 40;
     
     @Override
     public BufferedImage run(BufferedImage inputImage) {

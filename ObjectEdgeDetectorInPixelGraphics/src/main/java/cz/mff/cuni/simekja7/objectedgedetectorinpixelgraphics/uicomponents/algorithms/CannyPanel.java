@@ -10,7 +10,6 @@ import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -41,6 +40,7 @@ public class CannyPanel extends AlgorithmPanel{
             @Override
             public void stateChanged(ChangeEvent e) {
                 label1.setText(String.valueOf("Threshold 1:   " + s1.getValue()));
+                CannyEdgeAlgorithm.treshold1 = s1.getValue();
             }
         });
         leftPanel.add(label1);  
@@ -58,7 +58,8 @@ public class CannyPanel extends AlgorithmPanel{
         s2.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                label2.setText(String.valueOf("Threshold 2:   " + s2.getValue())); 
+                label2.setText(String.valueOf("Threshold 2:   " + s2.getValue()));
+                CannyEdgeAlgorithm.treshold2 = s2.getValue();
             }
         });
         rightPanel.add(label2);    
