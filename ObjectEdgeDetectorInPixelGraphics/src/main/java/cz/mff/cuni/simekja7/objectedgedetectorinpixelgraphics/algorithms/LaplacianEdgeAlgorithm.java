@@ -17,14 +17,17 @@ import org.opencv.imgproc.Imgproc;
  */
 public class LaplacianEdgeAlgorithm extends EdgeAlgorithm {
 
+    int blur_size = 3;
+    int ksize = 3;
+    
     @Override
     public Mat run(String image_name) {
         Mat src = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);
 
-        Imgproc.GaussianBlur(src, src, new Size(3, 3), 0);
+        Imgproc.GaussianBlur(src, src, new Size(blur_size, blur_size), 0);
 
         Mat laplacian = new Mat();
-        Imgproc.Laplacian(src, laplacian, CvType.CV_16S, 3, 1, 0, Core.BORDER_DEFAULT);
+        Imgproc.Laplacian(src, laplacian, CvType.CV_16S, ksize, 1, 0, Core.BORDER_DEFAULT);
 
         Mat absLaplacian = new Mat();
         Core.convertScaleAbs(laplacian, absLaplacian);

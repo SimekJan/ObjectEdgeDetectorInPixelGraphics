@@ -16,6 +16,12 @@ import java.io.IOException;
  */
 public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 
+    static int blur_kernel_size = 5;
+    static double blur_sigma = 1.4;
+    
+    int low_threshold = 50;
+    int high_threshold = 150;
+    
     @Override
     public Mat run(String image_name) {
         // Step 1: Load the image
@@ -34,7 +40,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         double[][] suppressedImage = nonMaximumSuppression(gradientResult.magnitude, gradientResult.direction);
         
         // Step 6: Apply double thresholding
-        EdgeType[][] edgeMap = doubleThreshold(suppressedImage, 50, 150);
+        EdgeType[][] edgeMap = doubleThreshold(suppressedImage, low_threshold, high_threshold);
 
         // Step 7: Perform edge tracking by hysteresis
         EdgeType[][] finalEdges = edgeTrackingByHysteresis(edgeMap);
@@ -42,8 +48,6 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         // Step 8: Convert result to BufferedImage and save
         BufferedImage outputImage = toBufferedImage(finalEdges);
         saveImage(outputImage, "test.jpg");
-
-        System.out.println("Canny edge detection completed. Output saved to: " + "test.jpg");
         
         return new Mat();
     }
@@ -65,7 +69,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     /**
      * Convert image to matrix of gray-scale values.
      * @param coloredImage Image to process.
-     * @return Image repressented by double values in intensity.
+     * @return Image represented by double values in intensity.
      */
     private static double[][] convertToGrayscale(BufferedImage coloredImage) {
         int width = coloredImage.getWidth();
@@ -89,10 +93,10 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     /**
      * Apply Gaussian blur to image in double representation.
      * @param image The image to blur.
-     * @return Blured image.
+     * @return Blurred image.
      */
     private static double[][] applyGaussianBlur(double[][] image) {
-        double[][] kernel = generateGaussianKernel(5, 1.4); // size 5x5, sigma 1.4
+        double[][] kernel = generateGaussianKernel(blur_kernel_size, blur_sigma);
         return convolve(image, kernel);
     }
 
@@ -129,7 +133,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
      * Convolve an image with a kernel.
      * @param image The image to process.
      * @param kernel The kernel to use.
-     * @return Blured image.
+     * @return Blurred image.
      */
     private static double[][] convolve(double[][] image, double[][] kernel) {
         int width = image.length;
@@ -301,8 +305,8 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     /**
      * Apply double thresholding to EdgeType matrix.
      * @param image Image to process.
-     * @param lowThreshold Treshold for weak edges.
-     * @param highThreshold Treshold for strong edges.
+     * @param lowThreshold Threshold for weak edges.
+     * @param highThreshold Threshold for strong edges.
      * @return Processed matrix of EdgeTypes.
      */
     private static EdgeType[][] doubleThreshold(double[][] image, double lowThreshold, double highThreshold) {

@@ -17,6 +17,10 @@ import org.opencv.imgproc.Imgproc;
  */
 public class SiftEdgeAlgorithm extends EdgeAlgorithm {
 
+    double sigma1 = 1.0;
+    double sigma2 = 4.0;
+    int threshold = 40;
+    
     @Override
     public Mat run(String image_name) {
         Mat image = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);
@@ -24,14 +28,14 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
         Mat lowBlur = new Mat();
         Mat highBlur = new Mat();
         
-        Imgproc.GaussianBlur(image, lowBlur, new Size(5, 5), 1.0);
-        Imgproc.GaussianBlur(image, highBlur, new Size(5, 5), 4.0);
+        Imgproc.GaussianBlur(image, lowBlur, new Size(5, 5), sigma1);
+        Imgproc.GaussianBlur(image, highBlur, new Size(5, 5), sigma2);
         
         Core.subtract(lowBlur, highBlur, image);
 
         image = AdjustBrightness(image);
         
-        Imgproc.threshold(image, image, 40, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(image, image, threshold, 255, Imgproc.THRESH_BINARY);
                 
         return image;
     }

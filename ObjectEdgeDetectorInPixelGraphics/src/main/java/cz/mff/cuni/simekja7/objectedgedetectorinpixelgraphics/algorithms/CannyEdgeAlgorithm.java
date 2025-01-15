@@ -15,7 +15,7 @@ import org.opencv.imgproc.Imgproc;
 public class CannyEdgeAlgorithm extends EdgeAlgorithm {
 
     static int treshold1 = 400;
-    static int treshold2 = 200;
+    static int treshold2 = 400;
     
     @Override
     public Mat run(String image_name) {
