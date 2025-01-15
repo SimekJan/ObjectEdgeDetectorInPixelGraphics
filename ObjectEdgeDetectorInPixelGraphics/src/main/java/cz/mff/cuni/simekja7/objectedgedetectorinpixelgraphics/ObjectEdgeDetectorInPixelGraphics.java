@@ -27,6 +27,6 @@ public class ObjectEdgeDetectorInPixelGraphics {
     public static void legacyMain(String[] args) {
         EdgeAlgorithm a = new SiftEdgeAlgorithm();
         
-        Imgcodecs.imwrite("SIFT_test.jpg", a.run("london.jpg"));
+        // Imgcodecs.imwrite("SIFT_test.jpg", a.run("london.jpg"));
     }
 }
