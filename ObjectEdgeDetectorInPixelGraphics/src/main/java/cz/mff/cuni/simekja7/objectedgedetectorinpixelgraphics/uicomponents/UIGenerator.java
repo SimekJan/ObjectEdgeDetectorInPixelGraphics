@@ -4,6 +4,13 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents;
 
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.imageui.ImageLoaderComponent;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.LaplacianPanel;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.CombinePanel;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.CannyPanel;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.CustomCannyPanel;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.SiftPanel;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.SobelPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;

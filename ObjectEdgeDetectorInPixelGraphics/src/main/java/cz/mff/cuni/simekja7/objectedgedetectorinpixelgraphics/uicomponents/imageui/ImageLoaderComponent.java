@@ -1,4 +1,4 @@
-package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents;
+package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.imageui;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
