@@ -4,15 +4,11 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents;
 
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.imageui.ImageLoaderComponent;
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.LaplacianPanel;
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.CombinePanel;
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.CannyPanel;
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.CustomCannyPanel;
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.SiftPanel;
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.SobelPanel;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.imageui.*;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,7 +29,8 @@ public class UIGenerator {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         JPanel topPanel = new JPanel();
-        topPanel.add(new ImageLoaderComponent());
+        topPanel.setLayout(new GridLayout(1,1));
+        topPanel.add(new ImageDisplayPanel());
         frame.add(topPanel, BorderLayout.CENTER);
         
         // Create the tabbed pane

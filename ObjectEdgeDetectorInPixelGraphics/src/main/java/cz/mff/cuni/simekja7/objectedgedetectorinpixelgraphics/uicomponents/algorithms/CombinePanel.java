@@ -9,7 +9,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -46,14 +45,13 @@ public class CombinePanel extends JPanel {
         topPanel.add(divider);
         topPanel.add(algLabel2);
         
-        // Add listeners to enforce mutual exclusion
         andCheckbox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (andCheckbox.isSelected()) {
                     orCheckbox.setSelected(false);
                 } else {
-                    andCheckbox.setSelected(true); // Ensure at least one is selected
+                    andCheckbox.setSelected(true);
                 }
             }
         });
@@ -64,7 +62,7 @@ public class CombinePanel extends JPanel {
                 if (orCheckbox.isSelected()) {
                     andCheckbox.setSelected(false);
                 } else {
-                    orCheckbox.setSelected(true); // Ensure at least one is selected
+                    orCheckbox.setSelected(true);
                 }
             }
         });
@@ -84,18 +82,15 @@ public class CombinePanel extends JPanel {
         centerPanel.setLayout(new BorderLayout());
         add(centerPanel, BorderLayout.CENTER);
         
-        // Create the dropdowns
         leftDropdown = new JComboBox<>(new String[] { "Canny Edge", "Sobel", "Laplacian", "SIFT", "Custom CE" });
         rightDropdown = new JComboBox<>(new String[] { "Canny Edge", "Sobel", "Laplacian", "SIFT", "Custom CE" });
         rightDropdown.setSelectedItem("Sobel");
 
-        // Panel to hold the dropdowns
         JPanel dropdownPanel = new JPanel();
-        dropdownPanel.setLayout(new GridLayout(1, 2));  // Two columns for the dropdowns
+        dropdownPanel.setLayout(new GridLayout(1, 2));
         dropdownPanel.add(leftDropdown);
         dropdownPanel.add(rightDropdown);
 
-        // Add dropdown panel to the top row
         centerPanel.add(dropdownPanel, BorderLayout.NORTH);
 
         JPanel algorithmPanel = new JPanel();
@@ -104,11 +99,9 @@ public class CombinePanel extends JPanel {
         leftPanel = new CannyPanel(false);
         rightPanel = new SobelPanel(false);
 
-        // Add the panels to the second row
         algorithmPanel.add(leftPanel);
         algorithmPanel.add(rightPanel);
 
-        // Add listeners to dropdowns to update corresponding panels
         leftDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,7 +121,7 @@ public class CombinePanel extends JPanel {
     }
 
     private void updateLeftPanel(String selection) {
-        leftPanel.removeAll();  // Clear current panel
+        leftPanel.removeAll();
         switch (selection) {
             case "Canny Edge":
                 leftPanel.add(new CannyPanel(false));
@@ -151,7 +144,7 @@ public class CombinePanel extends JPanel {
     }
 
     private void updateRightPanel(String selection) {
-        rightPanel.removeAll();  // Clear current panel
+        rightPanel.removeAll();
         switch (selection) {
             case "Canny Edge":
                 rightPanel.add(new CannyPanel(false));

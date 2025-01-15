@@ -6,7 +6,6 @@ package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**

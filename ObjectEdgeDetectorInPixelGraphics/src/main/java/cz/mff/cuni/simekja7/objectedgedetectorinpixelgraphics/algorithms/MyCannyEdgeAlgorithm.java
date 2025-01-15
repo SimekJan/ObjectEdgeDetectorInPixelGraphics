@@ -348,7 +348,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 
                 for (int dx = -1; dx <= 1; dx++) {
                     for (int dy = -1; dy <= 1; dy++) {
-                        if (edgeMap[x + dx][y + dy] == EdgeType.STRONG) { // Strong edge
+                        if (edgeMap[x + dx][y + dy] == EdgeType.STRONG) {
                             connectedToStrongEdge = true;
                             break;
                         }
@@ -356,7 +356,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
                     if (connectedToStrongEdge) break;
                 }
 
-                // If connected to a strong edge, promote to strong; otherwise, suppress
+                // If connected to a strong edge, promote to strong, otherwise, suppress
                 edgeMap[x][y] = connectedToStrongEdge ? EdgeType.STRONG : EdgeType.NONE;
             }
         }

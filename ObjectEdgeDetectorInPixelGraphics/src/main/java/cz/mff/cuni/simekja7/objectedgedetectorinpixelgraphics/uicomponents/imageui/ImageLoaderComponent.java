@@ -1,7 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.imageui;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -23,13 +26,10 @@ import javax.swing.JPanel;
  */
 public class ImageLoaderComponent extends JPanel {
 
-    private BufferedImage image; // Store the loaded image
+    private BufferedImage image;
 
     public ImageLoaderComponent() {
-        // Set the background color of the panel
         setBackground(Color.LIGHT_GRAY);
-        setSize(200,200);
-        setLayout(new FlowLayout());
 
         // Enable drag-and-drop functionality
         new DropTarget(this, new DropTargetListener() {
@@ -72,15 +72,41 @@ public class ImageLoaderComponent extends JPanel {
      */
     private void loadImage(File file) throws IOException {
         image = ImageIO.read(file);
-        repaint(); // Refresh the panel to display the new image
+        repaint();
+    }
+    
+    public BufferedImage getImage() {
+        return image;
     }
 
+    /**
+     * 
+     * @param g 
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (image != null) {
-            // Draw the image, scaling it to fit the panel
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
+            
+            int imageWidth = image.getWidth();
+            int imageHeight = image.getHeight();
+
+            double aspectRatio = (double) imageWidth / imageHeight;
+
+            int newWidth = panelWidth;
+            int newHeight = (int) (panelWidth / aspectRatio);
+
+            if (newHeight > panelHeight) {
+                newHeight = panelHeight;
+                newWidth = (int) (panelHeight * aspectRatio);
+            }
+
+            int x = (panelWidth - newWidth) / 2;
+            int y = (panelHeight - newHeight) / 2;
+
+            g.drawImage(image, x, y, newWidth, newHeight, this);
         }
     }
 }

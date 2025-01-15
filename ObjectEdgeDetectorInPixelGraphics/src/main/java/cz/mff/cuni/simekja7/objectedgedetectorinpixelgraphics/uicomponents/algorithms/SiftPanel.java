@@ -5,7 +5,6 @@
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
