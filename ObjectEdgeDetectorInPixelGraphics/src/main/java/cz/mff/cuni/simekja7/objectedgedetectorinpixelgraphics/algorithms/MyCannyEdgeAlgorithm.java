@@ -15,11 +15,11 @@ import java.io.IOException;
  */
 public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 
-    static int blur_kernel_size = 5;
-    static double blur_sigma = 1.4;
+    public static int blur_kernel_size = 5;
+    public static double blur_sigma = 1.4;
     
-    int low_threshold = 50;
-    int high_threshold = 150;
+    public static int low_threshold = 50;
+    public static int high_threshold = 150;
     
     @Override
     public BufferedImage run(BufferedImage inputImage) {

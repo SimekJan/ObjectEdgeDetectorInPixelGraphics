@@ -5,7 +5,10 @@
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.MyCannyEdgeAlgorithm;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SiftEdgeAlgorithm;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -34,6 +37,12 @@ public class CustomCannyPanel extends AlgorithmPanel {
         p1.add(l1, BorderLayout.NORTH);
         JComboBox<String> comboBox1 = new JComboBox<>(new String[]{"3x3", "5x5", "7x7"});
         comboBox1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MyCannyEdgeAlgorithm.blur_kernel_size = Integer.parseInt(((String)comboBox1.getSelectedItem()).substring(0, 1));
+            }
+        });
         p1.add(comboBox1, BorderLayout.CENTER);
         
         
@@ -44,6 +53,12 @@ public class CustomCannyPanel extends AlgorithmPanel {
         p2.add(l2, BorderLayout.NORTH);
         JComboBox<Double> comboBox2 = new JComboBox<>(new Double[]{1.0, 1.2, 1.4, 1.6, 1.8, 2.0});
         comboBox2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        comboBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MyCannyEdgeAlgorithm.blur_sigma = (Double)comboBox2.getSelectedItem();
+            }
+        });
         p2.add(comboBox2, BorderLayout.CENTER);
 
         
@@ -60,7 +75,8 @@ public class CustomCannyPanel extends AlgorithmPanel {
         s1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                l3.setText(String.valueOf("     Threshold 1:   " + s1.getValue())); 
+                l3.setText(String.valueOf("     Threshold 1:   " + s1.getValue()));
+                MyCannyEdgeAlgorithm.low_threshold = s1.getValue();
             }
         });
         s1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -81,6 +97,7 @@ public class CustomCannyPanel extends AlgorithmPanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 l3.setText(String.valueOf("     Threshold 2:   " + s2.getValue())); 
+                MyCannyEdgeAlgorithm.high_threshold = s2.getValue();
             }
         });
         s2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
