@@ -4,7 +4,6 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
-import org.opencv.core.Mat;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,7 +22,7 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     int high_threshold = 150;
     
     @Override
-    public Mat run(String image_name) {
+    public BufferedImage run(String image_name) {
         // Step 1: Load the image
         BufferedImage image = loadImage(image_name);
 
@@ -47,9 +46,8 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
 
         // Step 8: Convert result to BufferedImage and save
         BufferedImage outputImage = toBufferedImage(finalEdges);
-        saveImage(outputImage, "test.jpg");
         
-        return new Mat();
+        return outputImage;
     }
 
     /**

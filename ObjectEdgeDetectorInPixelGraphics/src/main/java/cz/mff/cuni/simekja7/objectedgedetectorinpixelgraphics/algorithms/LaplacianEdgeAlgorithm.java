@@ -4,6 +4,8 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.helpers.MatToBufferedImageConvertor;
+import java.awt.image.BufferedImage;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -21,7 +23,7 @@ public class LaplacianEdgeAlgorithm extends EdgeAlgorithm {
     int ksize = 3;
     
     @Override
-    public Mat run(String image_name) {
+    public BufferedImage run(String image_name) {
         Mat src = Imgcodecs.imread(image_name, Imgcodecs.IMREAD_GRAYSCALE);
 
         Imgproc.GaussianBlur(src, src, new Size(blur_size, blur_size), 0);
@@ -32,7 +34,9 @@ public class LaplacianEdgeAlgorithm extends EdgeAlgorithm {
         Mat absLaplacian = new Mat();
         Core.convertScaleAbs(laplacian, absLaplacian);
         
-        return absLaplacian;
+        BufferedImage toReturn = MatToBufferedImageConvertor.convert(absLaplacian);
+        
+        return toReturn;
     }
     
 }
