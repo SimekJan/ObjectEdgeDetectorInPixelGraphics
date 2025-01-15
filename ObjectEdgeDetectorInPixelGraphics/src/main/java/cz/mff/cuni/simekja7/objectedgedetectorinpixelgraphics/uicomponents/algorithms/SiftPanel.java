@@ -4,7 +4,9 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SiftEdgeAlgorithm;
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,7 +20,7 @@ import javax.swing.event.ChangeListener;
  *
  * @author simek.jan
  */
-public class SiftPanel extends JPanel {
+public class SiftPanel extends AlgorithmPanel {
     public SiftPanel(boolean includeRunButton) {
         setLayout(new BorderLayout());
         
@@ -75,5 +77,10 @@ public class SiftPanel extends JPanel {
             JButton runButton = new JButton("Run");
             add(runButton, BorderLayout.SOUTH);
         }
+    }
+
+    @Override
+    public BufferedImage runAlgorithm(BufferedImage inputImage) {
+        return new SiftEdgeAlgorithm().run(inputImage);
     }
 }

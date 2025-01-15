@@ -4,7 +4,9 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.MyCannyEdgeAlgorithm;
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,7 +20,7 @@ import javax.swing.event.ChangeListener;
  *
  * @author simek.jan
  */
-public class CustomCannyPanel extends JPanel {
+public class CustomCannyPanel extends AlgorithmPanel {
     public CustomCannyPanel(boolean includeRunButton) {
         setLayout(new BorderLayout());
         
@@ -96,5 +98,10 @@ public class CustomCannyPanel extends JPanel {
             JButton runButton = new JButton("Run");
             add(runButton, BorderLayout.SOUTH);
         }
+    }
+
+    @Override
+    public BufferedImage runAlgorithm(BufferedImage inputImage) {
+        return new MyCannyEdgeAlgorithm().run(inputImage);
     }
 }
