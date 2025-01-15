@@ -5,7 +5,6 @@
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -21,7 +20,7 @@ import javax.swing.event.ChangeListener;
  * @author simek.jan
  */
 public class CannyPanel extends JPanel{
-    public CannyPanel() {
+    public CannyPanel(boolean includeRunButton) {
         setLayout(new BorderLayout());
         
         JPanel topPanel = new JPanel();
@@ -68,7 +67,9 @@ public class CannyPanel extends JPanel{
  
         add(topPanel, BorderLayout.CENTER);
         
-        JButton runButton = new JButton("Run");
-        add(runButton, BorderLayout.SOUTH);
+        if (includeRunButton) {
+            JButton runButton = new JButton("Run");
+            add(runButton, BorderLayout.SOUTH);
+        }
     }
 }

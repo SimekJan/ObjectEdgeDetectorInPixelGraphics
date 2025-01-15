@@ -19,7 +19,7 @@ import javax.swing.event.ChangeListener;
  * @author simek.jan
  */
 public class CustomCannyPanel extends JPanel {
-    public CustomCannyPanel() {
+    public CustomCannyPanel(boolean includeRunButton) {
         setLayout(new BorderLayout());
         
         JPanel pt = new JPanel();
@@ -92,7 +92,9 @@ public class CustomCannyPanel extends JPanel {
         pt.add(p4);
         
         
-        JButton runButton = new JButton("Run");
-        add(runButton, BorderLayout.SOUTH);
+        if (includeRunButton) {
+            JButton runButton = new JButton("Run");
+            add(runButton, BorderLayout.SOUTH);
+        }
     }
 }

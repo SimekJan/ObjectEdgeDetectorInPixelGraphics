@@ -5,8 +5,6 @@
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -17,7 +15,7 @@ import javax.swing.JPanel;
  * @author simek.jan
  */
 public class SobelPanel extends JPanel {
-    public SobelPanel() {
+    public SobelPanel(boolean includeRunButton) {
         setLayout(new BorderLayout());
         JPanel pt = new JPanel();
         add(pt, BorderLayout.NORTH);
@@ -28,7 +26,9 @@ public class SobelPanel extends JPanel {
         add(pc, BorderLayout.CENTER);
         pc.add(comboBox);
         
-        JButton runButton = new JButton("Run");
-        add(runButton, BorderLayout.SOUTH);
+        if (includeRunButton) {
+            JButton runButton = new JButton("Run");
+            add(runButton, BorderLayout.SOUTH);
+        }
     }
 }

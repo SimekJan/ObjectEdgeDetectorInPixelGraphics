@@ -101,8 +101,8 @@ public class CombinePanel extends JPanel {
         JPanel algorithmPanel = new JPanel();
         algorithmPanel.setLayout(new GridLayout(1, 2));
         centerPanel.add(algorithmPanel, BorderLayout.CENTER);
-        leftPanel = new CannyPanel();
-        rightPanel = new SobelPanel();
+        leftPanel = new CannyPanel(false);
+        rightPanel = new SobelPanel(false);
 
         // Add the panels to the second row
         algorithmPanel.add(leftPanel);
@@ -131,19 +131,19 @@ public class CombinePanel extends JPanel {
         leftPanel.removeAll();  // Clear current panel
         switch (selection) {
             case "Canny Edge":
-                leftPanel.add(new CannyPanel());
+                leftPanel.add(new CannyPanel(false));
                 break;
             case "Sobel":
-                leftPanel.add(new SobelPanel());
+                leftPanel.add(new SobelPanel(false));
                 break;
             case "Laplacian":
-                leftPanel.add(new LaplacianPanel());
+                leftPanel.add(new LaplacianPanel(false));
                 break;
             case "SIFT":
-                leftPanel.add(new SiftPanel());
+                leftPanel.add(new SiftPanel(false));
                 break;
             case "Custom CE":
-                leftPanel.add(new CustomCannyPanel());
+                leftPanel.add(new CustomCannyPanel(false));
                 break;
         }
         leftPanel.revalidate();
@@ -154,19 +154,19 @@ public class CombinePanel extends JPanel {
         rightPanel.removeAll();  // Clear current panel
         switch (selection) {
             case "Canny Edge":
-                rightPanel.add(new CannyPanel());
+                rightPanel.add(new CannyPanel(false));
                 break;
             case "Sobel":
-                rightPanel.add(new SobelPanel());
+                rightPanel.add(new SobelPanel(false));
                 break;
             case "Laplacian":
-                rightPanel.add(new LaplacianPanel());
+                rightPanel.add(new LaplacianPanel(false));
                 break;
             case "SIFT":
-                rightPanel.add(new SiftPanel());
+                rightPanel.add(new SiftPanel(false));
                 break;
             case "Custom CE":
-                rightPanel.add(new CustomCannyPanel());
+                rightPanel.add(new CustomCannyPanel(false));
                 break;
         }
         rightPanel.revalidate();

@@ -20,7 +20,7 @@ import javax.swing.event.ChangeListener;
  * @author simek.jan
  */
 public class SiftPanel extends JPanel {
-    public SiftPanel() {
+    public SiftPanel(boolean includeRunButton) {
         setLayout(new BorderLayout());
         
         JPanel pt = new JPanel();
@@ -72,7 +72,9 @@ public class SiftPanel extends JPanel {
         pt.add(p3);
         
         
-        JButton runButton = new JButton("Run");
-        add(runButton, BorderLayout.SOUTH);
+        if (includeRunButton) {
+            JButton runButton = new JButton("Run");
+            add(runButton, BorderLayout.SOUTH);
+        }
     }
 }
