@@ -32,6 +32,21 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/site/apidocs</outputDirectory>
+                    <source>${maven.compiler.source}</source>
+                    <show>private</show>
+                    <author>true</author>
+                    <version>true</version>
+                    <windowTitle>${project.name} Documentation</windowTitle>
+                    <doctitle>${project.name}</doctitle>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
