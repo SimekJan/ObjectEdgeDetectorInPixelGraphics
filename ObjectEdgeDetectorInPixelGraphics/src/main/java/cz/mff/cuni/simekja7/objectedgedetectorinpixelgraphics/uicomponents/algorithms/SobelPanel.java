@@ -15,10 +15,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
+ * Panel class for encapsulating Sobel algorithm.
+ * Displays components to change parameters of the algorithm.
  * @author simek.jan
  */
 public class SobelPanel extends AlgorithmPanel {
+    
+    /**
+     * Constructor that creates panel to set up Sobel.
+     */
     public SobelPanel() {
         setLayout(new BorderLayout());
         JPanel pt = new JPanel();
@@ -37,11 +42,20 @@ public class SobelPanel extends AlgorithmPanel {
         pc.add(comboBox);
     }
 
+    /**
+     * Runs Sobel algorithm for given image.
+     * @param inputImage
+     * @return Result of Sobel algorithm in image.
+     */
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         return new SobelEdgeAlgorithm().run(inputImage);
     }
 
+    /**
+     * Returns a new instance of Sobel algorithm.
+     * @return New Sobel algorithm.
+     */ 
     @Override
     public EdgeAlgorithm getAlgorithm() {
         return new SobelEdgeAlgorithm();

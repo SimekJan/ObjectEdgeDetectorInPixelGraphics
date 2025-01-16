@@ -6,7 +6,6 @@ package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algo
 
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.EdgeAlgorithm;
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.MyCannyEdgeAlgorithm;
-import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SiftEdgeAlgorithm;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,10 +19,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * Panel class for encapsulating MyCannyEdge algorithm.
+ * Displays components to change parameters of the algorithm.
  * @author simek.jan
  */
 public class CustomCannyPanel extends AlgorithmPanel {
+    
+    /**
+     * Constructor that creates panel to set up MyCannyEdge.
+     */
     public CustomCannyPanel() {
         setLayout(new BorderLayout());
         
@@ -111,11 +115,20 @@ public class CustomCannyPanel extends AlgorithmPanel {
         pt.add(p4);
     }
 
+    /**
+     * Runs MyCannyEdge algorithm for given image.
+     * @param inputImage
+     * @return Result of MyCannyEdge in image.
+     */
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         return new MyCannyEdgeAlgorithm().run(inputImage);
     }
 
+    /**
+     * Returns a new instance of MyCannyEdge algorithm.
+     * @return New MyCannyEdge algorithm.
+     */
     @Override
     public EdgeAlgorithm getAlgorithm() {
         return new MyCannyEdgeAlgorithm();

@@ -16,10 +16,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
+ * Panel class for encapsulating Laplacian algorithm.
+ * Displays components to change parameters of the algorithm.
  * @author simek.jan
  */
 public class LaplacianPanel extends AlgorithmPanel {
+    
+    /**
+     * Constructor that creates panel to set up Laplacian.
+     */
     public LaplacianPanel() {
         setLayout(new BorderLayout());
         JPanel pt = new JPanel();
@@ -55,11 +60,20 @@ public class LaplacianPanel extends AlgorithmPanel {
         pc.add(comboBox2);
     }
 
+    /**
+     * Runs Laplacian algorithm for given image.
+     * @param inputImage
+     * @return Result of Laplacian in image.
+     */
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         return new LaplacianEdgeAlgorithm().run(inputImage);
     }
 
+    /**
+     * Returns a new instance of Laplacian algorithm.
+     * @return New Laplacian algorithm.
+     */
     @Override
     public EdgeAlgorithm getAlgorithm() {
         return new LaplacianEdgeAlgorithm();

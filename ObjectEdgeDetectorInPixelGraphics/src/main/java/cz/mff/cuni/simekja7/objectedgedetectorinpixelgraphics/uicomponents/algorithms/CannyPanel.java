@@ -18,10 +18,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * Panel class for encapsulating CannyEdge algorithm.
+ * Displays components to change parameters of the algorithm.
  * @author simek.jan
  */
 public class CannyPanel extends AlgorithmPanel{
+    
+    /**
+     * Constructor that creates panel to set up CannyEdge.
+     */
     public CannyPanel() {
         setLayout(new BorderLayout());
         
@@ -72,11 +77,20 @@ public class CannyPanel extends AlgorithmPanel{
         add(topPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Runs CannyEdge algorithm for given image.
+     * @param inputImage
+     * @return Result of CannyEdge in image.
+     */
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         return new CannyEdgeAlgorithm().run(inputImage);
     }
 
+    /**
+     * Returns a new instance of CannyEdge algorithm.
+     * @return New CannyEdge algorithm.
+     */
     @Override
     public EdgeAlgorithm getAlgorithm() {
         return new CannyEdgeAlgorithm();

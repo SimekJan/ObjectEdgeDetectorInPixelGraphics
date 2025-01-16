@@ -19,10 +19,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * Panel class for encapsulating Sift algorithm.
+ * Displays components to change parameters of the algorithm.
  * @author simek.jan
  */
 public class SiftPanel extends AlgorithmPanel {
+    
+    /**
+     * Constructor that creates panel to set up Sift.
+     */
     public SiftPanel() {
         setLayout(new BorderLayout());
         
@@ -88,11 +93,20 @@ public class SiftPanel extends AlgorithmPanel {
         pt.add(p3);
     }
 
+    /**
+     * Runs Sift algorithm for given image.
+     * @param inputImage
+     * @return Result of Sift algorithm in image.
+     */
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         return new SiftEdgeAlgorithm().run(inputImage);
     }
 
+    /**
+     * Returns a new instance of Sift algorithm.
+     * @return New Sift algorithm.
+     */
     @Override
     public EdgeAlgorithm getAlgorithm() {
         return new SiftEdgeAlgorithm();

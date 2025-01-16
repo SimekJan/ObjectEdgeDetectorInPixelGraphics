@@ -10,30 +10,41 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
- * A custom JPanel that displays an image and scales it to fit the panel while retaining its aspect ratio.
+ * Panel that displays output image.
+ * @author simek.jan
  */
 public class ImageResultDisplayComponent extends JPanel {
 
     private BufferedImage image;
 
+    /**
+     * Constructor that creates panel to show output image.
+     */
     public ImageResultDisplayComponent() {
         setBackground(Color.LIGHT_GRAY);
     }
 
     /**
      * Sets the image to be displayed and repaints the panel.
-     * 
-     * @param image The BufferedImage to display.
+     * @param image The image to display.
      */
     public void setImage(BufferedImage image) {
         this.image = image;
         repaint();
     }
     
+    /**
+     * Provides the output image.
+     * @return Output image being displayed.
+     */
     public BufferedImage getImage() {
         return image;
     }
 
+    /**
+     * Method to redraw panel with the output image.
+     * @param g 
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

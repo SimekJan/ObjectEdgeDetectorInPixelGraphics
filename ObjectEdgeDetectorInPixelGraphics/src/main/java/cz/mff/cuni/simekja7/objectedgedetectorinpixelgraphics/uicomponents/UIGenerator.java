@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 /**
- *
+ * Main class that generates apps window.
  * @author simek.jan
  */
 public class UIGenerator {
@@ -30,6 +30,10 @@ public class UIGenerator {
     static CustomCannyPanel customCannyPanel;
     static CombinePanel combinePanel;
     
+    /**
+     * Main method for creating the window layout.
+     * Called from main method of the program when started.
+     */
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("Object Edge Detector In Pixel Graphics");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

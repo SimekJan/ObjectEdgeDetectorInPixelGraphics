@@ -20,12 +20,11 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
- *
+ * Panel encapsulating top part of display where images are shown.
  * @author simek.jan
  */
 public class ImageDisplayPanel extends JPanel {
@@ -33,6 +32,9 @@ public class ImageDisplayPanel extends JPanel {
     private ImageLoaderComponent imageLoader;
     private ImageResultDisplayComponent resultImagePanel;
     
+    /**
+     * Constructor that creates panel display input and output.
+     */
     public ImageDisplayPanel() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -123,10 +125,18 @@ public class ImageDisplayPanel extends JPanel {
         add(resultImagePanel, gbc);
     }
     
+    /**
+     * Returns image provided by user to input field.
+     * @return The input image.
+     */
     public BufferedImage getInputImage() {
         return imageLoader.getImage();
     }
     
+    /**
+     * Place given image to the output field and display it.
+     * @param image Image to display in output field.
+     */
     public void setOutputImage(BufferedImage image) {
         resultImagePanel.setImage(image);
     }

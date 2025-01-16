@@ -21,15 +21,20 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * Panel class for encapsulating AlgorithmCombiner.
+ * Displays components to change parameters of both algorithms and their combination.
  * @author simek.jan
  */
 public class CombinePanel extends AlgorithmPanel {
+    
     private static JComboBox<String> leftDropdown;
     private static JComboBox<String> rightDropdown;
     private static JPanel leftPanel;
     private static JPanel rightPanel;
 
+    /**
+     * Constructor that creates panel to set up AlgorithmCombiner.
+     */
     public CombinePanel() {
         setLayout(new BorderLayout());
 
@@ -167,7 +172,7 @@ public class CombinePanel extends AlgorithmPanel {
         leftDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateLeftPanel((String) leftDropdown.getSelectedItem());
+                updateAlgorithmPanel((String) leftDropdown.getSelectedItem(), leftPanel);
                 
                 int part1 = divider.getValue();
                 int part2 = 100 - part1;
@@ -180,7 +185,7 @@ public class CombinePanel extends AlgorithmPanel {
         rightDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateRightPanel((String) rightDropdown.getSelectedItem());
+                updateAlgorithmPanel((String) rightDropdown.getSelectedItem(), rightPanel);
                 
                 int part1 = divider.getValue();
                 int part2 = 100 - part1;
@@ -191,56 +196,42 @@ public class CombinePanel extends AlgorithmPanel {
         });
         
         // Inital algorithms
-        updateLeftPanel((String) leftDropdown.getSelectedItem());
-        updateRightPanel((String) rightDropdown.getSelectedItem());
+        updateAlgorithmPanel((String) leftDropdown.getSelectedItem(), leftPanel);
+        updateAlgorithmPanel((String) rightDropdown.getSelectedItem(), rightPanel);
     }
 
-    private void updateLeftPanel(String selection) {
-        leftPanel.removeAll();
+    /**
+     * Private method that handles changes of algorithm in given algorithm panel.
+     * @param selection 
+     */
+    private void updateAlgorithmPanel(String selection, JPanel panelToChange) {
+        panelToChange.removeAll();
         switch (selection) {
             case "Canny Edge":
-                leftPanel.add(new CannyPanel());
+                panelToChange.add(new CannyPanel());
                 break;
             case "Sobel":
-                leftPanel.add(new SobelPanel());
+                panelToChange.add(new SobelPanel());
                 break;
             case "Laplacian":
-                leftPanel.add(new LaplacianPanel());
+                panelToChange.add(new LaplacianPanel());
                 break;
             case "SIFT":
-                leftPanel.add(new SiftPanel());
+                panelToChange.add(new SiftPanel());
                 break;
             case "Custom CE":
-                leftPanel.add(new CustomCannyPanel());
+                panelToChange.add(new CustomCannyPanel());
                 break;
         }
-        leftPanel.revalidate();
-        leftPanel.repaint();
+        panelToChange.revalidate();
+        panelToChange.repaint();
     }
 
-    private void updateRightPanel(String selection) {
-        rightPanel.removeAll();
-        switch (selection) {
-            case "Canny Edge":
-                rightPanel.add(new CannyPanel());
-                break;
-            case "Sobel":
-                rightPanel.add(new SobelPanel());
-                break;
-            case "Laplacian":
-                rightPanel.add(new LaplacianPanel());
-                break;
-            case "SIFT":
-                rightPanel.add(new SiftPanel());
-                break;
-            case "Custom CE":
-                rightPanel.add(new CustomCannyPanel());
-                break;
-        }
-        rightPanel.revalidate();
-        rightPanel.repaint();
-    }
-
+    /**
+     * Runs AlgorithmCombiner with chosen algorithms for given image.
+     * @param inputImage
+     * @return Result of AlgorithmCombiner in image.
+     */
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         AlgorithmCombiner.alg1 = ((AlgorithmPanel) leftPanel.getComponent(0)).getAlgorithm();
@@ -251,6 +242,10 @@ public class CombinePanel extends AlgorithmPanel {
         return result;
     }
 
+    /**
+     * Returns a new instance of AlgorithmCombiner.
+     * @return New AlgorithmCombiner instance.
+     */
     @Override
     public EdgeAlgorithm getAlgorithm() {
         return new AlgorithmCombiner();
