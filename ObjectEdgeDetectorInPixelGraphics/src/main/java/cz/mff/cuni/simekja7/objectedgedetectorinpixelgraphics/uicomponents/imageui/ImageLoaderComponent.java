@@ -70,7 +70,7 @@ public class ImageLoaderComponent extends JPanel {
      * @param file The image file to load.
      * @throws IOException If an error occurs while reading the file.
      */
-    private void loadImage(File file) throws IOException {
+    public void loadImage(File file) throws IOException {
         image = ImageIO.read(file);
         repaint();
     }

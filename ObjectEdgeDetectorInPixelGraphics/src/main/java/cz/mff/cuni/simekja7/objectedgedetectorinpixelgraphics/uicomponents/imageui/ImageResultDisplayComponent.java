@@ -29,6 +29,10 @@ public class ImageResultDisplayComponent extends JPanel {
         this.image = image;
         repaint();
     }
+    
+    public BufferedImage getImage() {
+        return image;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

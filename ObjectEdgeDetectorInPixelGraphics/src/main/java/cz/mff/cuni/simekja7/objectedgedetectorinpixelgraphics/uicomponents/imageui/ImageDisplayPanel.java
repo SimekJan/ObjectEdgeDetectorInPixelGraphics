@@ -10,9 +10,17 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -48,6 +56,27 @@ public class ImageDisplayPanel extends JPanel {
         JPanel loadPanel = new JPanel();
         loadPanel.setLayout(new BorderLayout());
         JButton loadImageButton = new JButton("Load image manually");
+        loadImageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("File Chooser Window");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(400, 200);
+                
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Select a File to Load");
+
+                int result = fileChooser.showOpenDialog(frame);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    try {
+                        imageLoader.loadImage(selectedFile);
+                    }
+                    catch (IOException ex) {}
+                }
+            }
+        });
         loadPanel.add(loadImageButton, BorderLayout.SOUTH);
         middlePanel.add(loadPanel);
         
@@ -58,6 +87,32 @@ public class ImageDisplayPanel extends JPanel {
         JPanel savePanel = new JPanel();
         savePanel.setLayout(new BorderLayout());
         JButton saveImageButton = new JButton("Save generated image");
+        saveImageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("File Chooser Window");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(400, 200);
+                
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Save Image As");
+
+                int userSelection = fileChooser.showSaveDialog(frame);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File fileToSave = fileChooser.getSelectedFile();
+
+                    if (!fileToSave.getName().toLowerCase().endsWith(".jpg")) {
+                        fileToSave = new File(fileToSave.getAbsolutePath() + ".jpg");
+                    }
+
+                    try {
+                        ImageIO.write(resultImagePanel.getImage(), "jpg", fileToSave);
+                    } 
+                    catch (IOException ex) {}
+                }
+            }
+        });
         savePanel.add(saveImageButton, BorderLayout.NORTH);
         middlePanel.add(savePanel);
 
