@@ -10,6 +10,7 @@ The main directory contains apart of this README these items:
 
 - ```ObjectEdgeDetectorInPixelGraphics``` folder which contains the Java with Maven project itself and is its root directory.
 - ```ImagesCreatedInTesting``` folder which contains interesting images (in my opinion) that were created when working on this project (some are not replicable on final version).
+- ```DocImages``` folder which holds images used in this documentation.
 - ```specifikace_projektu.pdf``` which is article-like pdf file with initial specification of the project (before it was started). This file is only in Czech.
 - ```vyhodnoceni_projektu.pdf``` which contains my sumarisation of the final project and evaluates the initial specification. This file is also only in Czech.
 - ```.gitignore``` internal git repository file.
@@ -51,10 +52,6 @@ On my computer (Windows) the whole command looks like this: ```java -Djava.libra
 
 This document partly serves as a programers documentation in combination with the generated documentation described [bellow](###-generated-documentation).
 
-### User documentation
-
-TODO
-
 ### Generated documentation
 
 This project contains generated documentation of Java Maven project. 
@@ -64,4 +61,18 @@ After the generating is finished the documentation is located in ```/target/site
 
 The documentation contains brief descriptions of classes, methods and other components.
 
+### User documentation
+
+After opening the application, the screen like this is presented to the user:
+
+![app overview](/DocImages/basicScreen.png "Whole app window")
+
+First let's describe the top part with places for images:
+
+![top panel](/DocImages/topScreenNumbered.png "Top part of screen")
+
+1. A place where the input image will be displayed when one is provided. Drag-and-drop function is enabled on this frame, it is one method to add image for processing.
+2. Button for manual adding of the image. This display a simple smaller window where input image can be selected from system files.
+3. A place where the output image will be displayed when algithm is runned and returns result.
+4. A button which opens simple smaller window where name and location for saving the displayed output image can be selected. 
 
