@@ -8,9 +8,7 @@ import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.CannyEd
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.EdgeAlgorithm;
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SobelEdgeAlgorithm;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
@@ -20,10 +18,16 @@ import org.opencv.imgproc.Imgproc;
  */
 public class AlgorithmCombiner extends EdgeAlgorithm {
 
-    public EdgeAlgorithm alg1 = new CannyEdgeAlgorithm();
-    public EdgeAlgorithm alg2 = new SobelEdgeAlgorithm();
-    public Boolean useAnd = true;
-    public int threshold = 1;
+    public enum COMBINE_MODE {AND, OR, WEIGHTED}
+    
+    public static EdgeAlgorithm alg1 = new CannyEdgeAlgorithm();
+    public static EdgeAlgorithm alg2 = new SobelEdgeAlgorithm();
+    public static COMBINE_MODE mode = COMBINE_MODE.AND;
+    
+    // Only for weighted variant
+    public static int threshold = 1;
+    public static double alpha1 = 0.5;
+    public static double alpha2 = 0.5;
     
     @Override
     public BufferedImage run(BufferedImage inputImage) {
@@ -34,32 +38,26 @@ public class AlgorithmCombiner extends EdgeAlgorithm {
         Mat alg2Mat = MatBufferedImageConvertor.bufferedImageToMat(alg2Result);
         
         Mat combined = new Mat();
-        if(useAnd) {
-            Core.bitwise_and(alg1Mat, alg2Mat, combined);
-        }
-        else { // useOr
-            Core.bitwise_and(alg1Mat, alg2Mat, combined);
-        }
-            
         Mat resultMat = new Mat();
-        Imgproc.threshold(combined, resultMat, threshold, 255, Imgproc.THRESH_BINARY);
+
+        switch (mode) {
+            case WEIGHTED -> {
+                Core.addWeighted(alg1Mat, alpha1, alg2Mat, alpha2, 0, combined);
+                Imgproc.threshold(combined, resultMat, threshold, 255, Imgproc.THRESH_BINARY);
+            }
+            case OR -> {
+                Core.bitwise_or(alg1Mat, alg2Mat, combined);
+                resultMat = combined;
+            }
+            default -> {
+                // AND
+                Core.bitwise_and(alg1Mat, alg2Mat, combined);
+                resultMat = combined;
+            }
+        }
         
         BufferedImage resultImage = MatBufferedImageConvertor.matToBufferedImage(resultMat);
         
         return resultImage;
-    }
-    
-    /**
-     * Change all parameters of combining at ones.
-     * @param alg1 First new algorithm to use.
-     * @param alg2 Second new algorithm to use.
-     * @param useAnd Whether use AND (true) or OR (false) of the algorithm results.
-     * @param threshold Threshold to add to result if combination is higher than. For AND can be as low as 1, for OR higher value is preferable.
-     */
-    public void changeParams(EdgeAlgorithm alg1, EdgeAlgorithm alg2, Boolean useAnd, int threshold) {
-        this.alg1 = alg1;
-        this.alg2 = alg2;
-        this.useAnd = useAnd;
-        this.threshold = threshold;
     }
 }

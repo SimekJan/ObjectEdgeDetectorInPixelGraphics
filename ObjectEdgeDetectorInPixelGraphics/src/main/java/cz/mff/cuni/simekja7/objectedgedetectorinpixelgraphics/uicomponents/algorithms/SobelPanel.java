@@ -4,6 +4,7 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.EdgeAlgorithm;
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SobelEdgeAlgorithm;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -39,5 +40,10 @@ public class SobelPanel extends AlgorithmPanel {
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         return new SobelEdgeAlgorithm().run(inputImage);
+    }
+
+    @Override
+    public EdgeAlgorithm getAlgorithm() {
+        return new SobelEdgeAlgorithm();
     }
 }

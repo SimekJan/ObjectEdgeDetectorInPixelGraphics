@@ -4,13 +4,16 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.EdgeAlgorithm;
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.helpers.AlgorithmCombiner;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -23,11 +26,11 @@ import javax.swing.event.ChangeListener;
  *
  * @author simek.jan
  */
-public class CombinePanel extends JPanel {
-    private JComboBox<String> leftDropdown;
-    private JComboBox<String> rightDropdown;
-    private JPanel leftPanel;
-    private JPanel rightPanel;
+public class CombinePanel extends AlgorithmPanel {
+    private static JComboBox<String> leftDropdown;
+    private static JComboBox<String> rightDropdown;
+    private static JPanel leftPanel;
+    private static JPanel rightPanel;
 
     public CombinePanel() {
         setLayout(new BorderLayout());
@@ -36,35 +39,82 @@ public class CombinePanel extends JPanel {
         add(topPanel, BorderLayout.NORTH);
         JCheckBox andCheckbox = new JCheckBox("AND results", true) ;
         JCheckBox orCheckbox = new JCheckBox("OR results", false);
-        orCheckbox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
+        JCheckBox weightedCheckbox = new JCheckBox("Weighted results", false);
+        weightedCheckbox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
         topPanel.add(andCheckbox);
         topPanel.add(orCheckbox);
+        topPanel.add(weightedCheckbox);
         JSlider divider = new JSlider(0, 100, 50);
         JLabel algLabel1 = new JLabel("Canny Edge: 50%");
-        JLabel algLabel2 = new JLabel("Canny Edge: 50%");
+        JLabel algLabel2 = new JLabel("Sobel: 50%");
+        algLabel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
         topPanel.add(algLabel1);
         topPanel.add(divider);
         topPanel.add(algLabel2);
+        JLabel andThresholdLabel = new JLabel("Result threshold: 1");
+        JSlider andThreshold = new JSlider(1, 254, 1);
+        topPanel.add(andThresholdLabel);
+        topPanel.add(andThreshold);
+        
+        // Initial is AND, so these are not visible
+        divider.setVisible(false);
+        algLabel1.setVisible(false);
+        algLabel2.setVisible(false);
+        andThresholdLabel.setVisible(false);
+        andThreshold.setVisible(false);
+        
         
         andCheckbox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (andCheckbox.isSelected()) {
+                if (andCheckbox.isSelected() || weightedCheckbox.isSelected()) {
                     orCheckbox.setSelected(false);
+                    weightedCheckbox.setSelected(false);
                 } else {
                     andCheckbox.setSelected(true);
                 }
+                AlgorithmCombiner.mode = AlgorithmCombiner.COMBINE_MODE.AND;
+                divider.setVisible(false);
+                algLabel1.setVisible(false);
+                algLabel2.setVisible(false);
+                andThresholdLabel.setVisible(false);
+                andThreshold.setVisible(false);
             }
         });
 
         orCheckbox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (orCheckbox.isSelected()) {
+                if (orCheckbox.isSelected() || weightedCheckbox.isSelected()) {
                     andCheckbox.setSelected(false);
+                    weightedCheckbox.setSelected(false);
                 } else {
                     orCheckbox.setSelected(true);
                 }
+                AlgorithmCombiner.mode = AlgorithmCombiner.COMBINE_MODE.OR;
+                divider.setVisible(false);
+                algLabel1.setVisible(false);
+                algLabel2.setVisible(false);
+                andThresholdLabel.setVisible(false);
+                andThreshold.setVisible(false);
+            }
+        });
+        
+        weightedCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (andCheckbox.isSelected() || orCheckbox.isSelected()) {
+                    andCheckbox.setSelected(false);
+                    orCheckbox.setSelected(false);
+                } else {
+                    weightedCheckbox.setSelected(true);
+                }
+                AlgorithmCombiner.mode = AlgorithmCombiner.COMBINE_MODE.WEIGHTED;
+                divider.setVisible(true);
+                algLabel1.setVisible(true);
+                algLabel2.setVisible(true);
+                andThresholdLabel.setVisible(true);
+                andThreshold.setVisible(true);
             }
         });
         
@@ -74,8 +124,21 @@ public class CombinePanel extends JPanel {
                 int part1 = divider.getValue();
                 int part2 = 100 - part1;
 
-                algLabel1.setText("Canny Edge: " + part1 + "%");
-                algLabel2.setText("Canny Edge: " + part2 + "%");
+                algLabel1.setText(leftDropdown.getSelectedItem() + ": " + part1 + "%");
+                algLabel2.setText(rightDropdown.getSelectedItem() + ": " + part2 + "%");
+                
+                AlgorithmCombiner.alpha1 = ((double)divider.getValue()) / 100.0;
+                AlgorithmCombiner.alpha2 = (100.0 - ((double)divider.getValue())) / 100.0;
+            }
+        });
+        
+        andThreshold.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int threshold = andThreshold.getValue();
+                andThresholdLabel.setText("Result threshold: " + threshold);
+                
+                AlgorithmCombiner.threshold = threshold;
             }
         });
         
@@ -107,6 +170,12 @@ public class CombinePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateLeftPanel((String) leftDropdown.getSelectedItem());
+                
+                int part1 = divider.getValue();
+                int part2 = 100 - part1;
+
+                algLabel1.setText(leftDropdown.getSelectedItem() + ": " + part1 + "%");
+                algLabel2.setText(rightDropdown.getSelectedItem() + ": " + part2 + "%");
             }
         });
 
@@ -114,6 +183,12 @@ public class CombinePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateRightPanel((String) rightDropdown.getSelectedItem());
+                
+                int part1 = divider.getValue();
+                int part2 = 100 - part1;
+
+                algLabel1.setText(leftDropdown.getSelectedItem() + ": " + part1 + "%");
+                algLabel2.setText(rightDropdown.getSelectedItem() + ": " + part2 + "%");
             }
         });
     }
@@ -162,5 +237,28 @@ public class CombinePanel extends JPanel {
         }
         rightPanel.revalidate();
         rightPanel.repaint();
+    }
+
+    @Override
+    public BufferedImage runAlgorithm(BufferedImage inputImage) {
+        AlgorithmCombiner.alg1 = ((AlgorithmPanel) leftPanel.getComponent(0)).getAlgorithm();
+        AlgorithmCombiner.alg2 = ((AlgorithmPanel) rightPanel.getComponent(0)).getAlgorithm();
+        
+        BufferedImage result = new AlgorithmCombiner().run(inputImage);
+        
+        File outputFile = new File("output_image.jpg");
+        try {
+            ImageIO.write(result, "JPEG", outputFile);
+        }
+        catch (Exception e) {
+            
+        }
+            
+        return result;
+    }
+
+    @Override
+    public EdgeAlgorithm getAlgorithm() {
+        return new AlgorithmCombiner();
     }
 }

@@ -4,6 +4,7 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.EdgeAlgorithm;
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.MyCannyEdgeAlgorithm;
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SiftEdgeAlgorithm;
 import java.awt.BorderLayout;
@@ -113,5 +114,10 @@ public class CustomCannyPanel extends AlgorithmPanel {
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         return new MyCannyEdgeAlgorithm().run(inputImage);
+    }
+
+    @Override
+    public EdgeAlgorithm getAlgorithm() {
+        return new MyCannyEdgeAlgorithm();
     }
 }

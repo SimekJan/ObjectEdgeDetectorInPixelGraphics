@@ -4,6 +4,7 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.uicomponents.algorithms;
 
+import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.EdgeAlgorithm;
 import cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms.SiftEdgeAlgorithm;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -90,5 +91,10 @@ public class SiftPanel extends AlgorithmPanel {
     @Override
     public BufferedImage runAlgorithm(BufferedImage inputImage) {
         return new SiftEdgeAlgorithm().run(inputImage);
+    }
+
+    @Override
+    public EdgeAlgorithm getAlgorithm() {
+        return new SiftEdgeAlgorithm();
     }
 }
