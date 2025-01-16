@@ -12,9 +12,9 @@ The main directory of project contains these items:
 - ```ImagesCreatedInTesting``` folder which contains interesting images (in my opinion) that were created when working on this project (some are not replicable on final version).
 - ```ObjectEdgeDetectorInPixelGraphics``` folder which contains the Java with Maven project itself and is its root directory.
 - ```.gitignore``` internal git repository file.
+- ```README.md``` which you are currently reading. It serves as documentation and gives basic information about the project.
 - ```specifikace_projektu.pdf``` which is article-like pdf file with initial specification of the project (before it was started). This file is only in Czech.
 - ```vyhodnoceni_projektu.pdf``` which contains my sumarisation of the final project and evaluates the initial specification. This file is also only in Czech.
-- ```README.md``` which you are currently reading. It serves as documentation and gives basic information about the project.
 
 ## Using the program
 
