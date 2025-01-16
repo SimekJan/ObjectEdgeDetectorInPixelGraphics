@@ -18,6 +18,9 @@ import org.opencv.imgproc.Imgproc;
  */
 public class AlgorithmCombiner extends EdgeAlgorithm {
 
+    /**
+     * Helper enum to differentiate modes of combining.
+     */
     public enum COMBINE_MODE {AND, OR, WEIGHTED}
     
     public static EdgeAlgorithm alg1 = new CannyEdgeAlgorithm();

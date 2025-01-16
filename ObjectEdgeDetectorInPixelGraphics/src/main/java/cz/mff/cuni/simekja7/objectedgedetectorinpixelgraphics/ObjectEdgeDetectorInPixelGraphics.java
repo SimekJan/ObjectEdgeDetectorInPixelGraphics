@@ -13,7 +13,7 @@ import org.opencv.core.Core;
  * @author simek.jan
  */
 public class ObjectEdgeDetectorInPixelGraphics {
-    
+        
     // Load OpenCV library
     static { System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
     
@@ -21,7 +21,7 @@ public class ObjectEdgeDetectorInPixelGraphics {
      * Main method that opens the app window.
      * @param args Arguments of the program (should be empty)
      */
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(UIGenerator::createAndShowGUI);        
     }
 }
