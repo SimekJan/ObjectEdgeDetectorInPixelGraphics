@@ -9,17 +9,21 @@ import java.awt.image.BufferedImage;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
- * SobelEdge algorithm using OpenCV implementation.
+ * SobelEdge algorithm implementation using OpenCV.
  * @author simek.jan
  */
 public class SobelEdgeAlgorithm extends EdgeAlgorithm {
 
     public static int ksize = 3;
     
+    /**
+     * Runs Sobel algorithm on given image.
+     * @param inputImage
+     * @return Sobel algorithm output image.
+     */
     @Override
     public BufferedImage run(BufferedImage inputImage) {
         Mat src = MatBufferedImageConvertor.bufferedImageToMat(inputImage);

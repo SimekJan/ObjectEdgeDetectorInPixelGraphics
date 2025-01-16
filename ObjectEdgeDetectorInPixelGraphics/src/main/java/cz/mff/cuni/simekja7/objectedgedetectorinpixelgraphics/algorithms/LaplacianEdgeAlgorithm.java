@@ -21,6 +21,11 @@ public class LaplacianEdgeAlgorithm extends EdgeAlgorithm {
     public static int blur_size = 3;
     public static int ksize = 3;
     
+    /**
+     * Runs Laplacian algorithm on given image.
+     * @param inputImage
+     * @return Laplacian output image.
+     */
     @Override
     public BufferedImage run(BufferedImage inputImage) {
         Mat src = MatBufferedImageConvertor.bufferedImageToMat(inputImage);

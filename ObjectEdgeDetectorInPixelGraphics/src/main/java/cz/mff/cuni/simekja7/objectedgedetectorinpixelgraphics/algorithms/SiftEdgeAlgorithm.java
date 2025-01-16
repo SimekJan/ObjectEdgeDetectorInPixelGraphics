@@ -22,6 +22,11 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
     public static double sigma2 = 4.0;
     public static int threshold = 40;
     
+    /**
+     * Runs Sift algorithm on given image.
+     * @param inputImage
+     * @return Sift algorithm output image.
+     */
     @Override
     public BufferedImage run(BufferedImage inputImage) {
         Mat image = MatBufferedImageConvertor.bufferedImageToMat(inputImage);
@@ -44,7 +49,7 @@ public class SiftEdgeAlgorithm extends EdgeAlgorithm {
     }
     
     /**
-     * Adjust the brighthness of a picture so that the brightest point is now white.
+     * Adjusts the brighthness of a picture so that the brightest point is now white.
      * @param input Mat of the image to adjust.
      * @return Mat of adjusted image.
      */

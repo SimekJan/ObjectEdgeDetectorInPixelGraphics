@@ -12,11 +12,16 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 /**
- *
+ * Helper class that converts BufferedImage and Mat in both directions.
  * @author simek.jan
  */
 public class MatBufferedImageConvertor {
     
+    /**
+     * Converts given BufferedImage to Mat ensuring it is in gray-scale in process.
+     * @param image Image to convert.
+     * @return Result Mat.
+     */
     public static Mat bufferedImageToMat(BufferedImage image) {
         BufferedImage grayImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);  
         Graphics g = grayImage.getGraphics();  
@@ -29,6 +34,11 @@ public class MatBufferedImageConvertor {
         return mat;
     }
 
+    /**
+     * Converts given Mat to BufferedImage ensuring it is in gray-scale in process.
+     * @param mat Mat to convert.
+     * @return Result image.
+     */
     public static BufferedImage matToBufferedImage(Mat mat) {
         int width = mat.width();
         int height = mat.height();

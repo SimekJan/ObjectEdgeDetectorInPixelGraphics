@@ -13,7 +13,7 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 /**
- *
+ * Class for combining two EdgeAlgorithms using various methods.
  * @author simek.jan
  */
 public class AlgorithmCombiner extends EdgeAlgorithm {
@@ -29,6 +29,11 @@ public class AlgorithmCombiner extends EdgeAlgorithm {
     public static double alpha1 = 0.5;
     public static double alpha2 = 0.5;
     
+    /**
+     * Runs both algorithms and then merges results in a way entered to mode variable.
+     * @param inputImage 
+     * @return Image representing combined results of both algorithms.
+     */
     @Override
     public BufferedImage run(BufferedImage inputImage) {
         BufferedImage alg1Result = alg1.run(inputImage);

@@ -4,10 +4,7 @@
  */
 package cz.mff.cuni.simekja7.objectedgedetectorinpixelgraphics.algorithms;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Custom implementation of Canny edge algorithm.
@@ -21,6 +18,11 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
     public static int low_threshold = 50;
     public static int high_threshold = 150;
     
+    /**
+     * Runs Custom CannyEdge algorithm on given image.
+     * @param inputImage
+     * @return Custom CannyEdge output image.
+     */
     @Override
     public BufferedImage run(BufferedImage inputImage) {
         
@@ -366,14 +368,5 @@ public class MyCannyEdgeAlgorithm extends EdgeAlgorithm {
         }
 
         return image;
-    }
-
-    // TODO: remove later
-    private static void saveImage(BufferedImage image, String outputPath) {
-        try {
-            ImageIO.write(image, "jpg", new File(outputPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
