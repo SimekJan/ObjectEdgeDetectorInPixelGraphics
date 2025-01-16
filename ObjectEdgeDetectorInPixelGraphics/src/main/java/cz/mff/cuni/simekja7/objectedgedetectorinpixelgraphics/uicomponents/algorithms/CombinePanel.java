@@ -11,8 +11,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -191,6 +189,10 @@ public class CombinePanel extends AlgorithmPanel {
                 algLabel2.setText(rightDropdown.getSelectedItem() + ": " + part2 + "%");
             }
         });
+        
+        // Inital algorithms
+        updateLeftPanel((String) leftDropdown.getSelectedItem());
+        updateRightPanel((String) rightDropdown.getSelectedItem());
     }
 
     private void updateLeftPanel(String selection) {
@@ -245,14 +247,6 @@ public class CombinePanel extends AlgorithmPanel {
         AlgorithmCombiner.alg2 = ((AlgorithmPanel) rightPanel.getComponent(0)).getAlgorithm();
         
         BufferedImage result = new AlgorithmCombiner().run(inputImage);
-        
-        File outputFile = new File("output_image.jpg");
-        try {
-            ImageIO.write(result, "JPEG", outputFile);
-        }
-        catch (Exception e) {
-            
-        }
             
         return result;
     }
