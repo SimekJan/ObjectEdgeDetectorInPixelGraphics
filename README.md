@@ -29,7 +29,7 @@ Version 3.9.9 was used to test compilation process.
 To use this program users need to have a distribution of **OpenCV** on their computer.
 OpenCV can be downloaded from [official website](https://opencv.org/releases/).
 Version 4.9.0 was used during developement and it is specified in ```pom.xml```.
-Downloaded files need to be extracted and their location needs to be specified as a parameter in commadn which starts the program itself (see [Running the program](###running-the-program
+Downloaded files need to be extracted and their location needs to be specified as a parameter in commadn which starts the program itself (see [Running the program](#running-the-program
 )).
 
 ### Building the program
