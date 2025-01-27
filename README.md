@@ -51,7 +51,7 @@ On my computer (Windows) the whole command looks like this: ```java -Djava.libra
 
 ### Cleaning the project
 
-Generated files can be deled using ```mvn clean``` command in the Java project root directory (/ObjectEdgeDetectorInPixelGraphics).
+Generated files can be deleted using ```mvn clean``` command in the Java project root directory (/ObjectEdgeDetectorInPixelGraphics).
 
 ## Generated documentation
 
